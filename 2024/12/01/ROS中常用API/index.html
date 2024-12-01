@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Wu Xuanye">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ROS常用APIros::init()ros::init( argc, argv, &quot;name of node&quot;,option)该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；  argv： 该参数是向其中传入的参数的数组，即假设我们向其中传入了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS中常用API">
+<meta property="og:url" content="http://example.com/2024/12/01/ROS%E4%B8%AD%E5%B8%B8%E7%94%A8API/index.html">
+<meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
+<meta property="og:description" content="ROS常用APIros::init()ros::init( argc, argv, &quot;name of node&quot;,option)该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；  argv： 该参数是向其中传入的参数的数组，即假设我们向其中传入了">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-12-01T10:00:35.000Z">
+<meta property="article:modified_time" content="2024-12-01T10:01:02.208Z">
+<meta property="article:author" content="Wu Xuanye">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ROS中常用API - Cumulus/Wu Xuanye</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Cumulus</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ROS中常用API"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-01 18:00" pubdate>
+          December 1, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ROS中常用API</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ROS常用API"><a href="#ROS常用API" class="headerlink" title="ROS常用API"></a>ROS常用API</h1><h2 id="ros-init"><a href="#ros-init" class="headerlink" title="ros::init()"></a>ros::init()</h2><h3 id="ros-init-argc-argv-name-of-node-option"><a href="#ros-init-argc-argv-name-of-node-option" class="headerlink" title="ros::init( argc, argv, &quot;name of node&quot;,option)"></a><code>ros::init( argc, argv, &quot;name of node&quot;,option)</code></h3><p>该函数有四个参数， argc, argv, name,option</p>
+<p>其中，各参数有以下作用：</p>
+<ol>
+<li><p>argc：</p>
+<p>向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；</p>
+</li>
+<li><p>argv：</p>
+<p>该参数是向其中传入的参数的数组，即假设我们向其中传入了0~9共10 个数，那么这个数组将会是：<br>$$<br>0 \ 1 \ 2 \ 3 \ 4 <br>  5 \ 6 \ 7 \ 8 \ 9<br>$$</p>
+</li>
+<li><p>name of node:</p>
+<p>该节点的名称，通常情况下节点名称具有唯一性，即每个节点的名字要不同</p>
+</li>
+<li><p>option:</p>
+<p>有些时候，我们会反复开启一个节点。此时为了保持节点唯一性，就需要使用option下面的ros::init_options::AnonymousName，该值为封装好的值，直接替换option所在位置即可</p>
+</li>
+<li><p>为了向其中传入数据，我们可以用特定格式，如 _length :&#x3D; 2</p>
+<p>这会为参数服务器插入一个值为2的length</p>
+</li>
+<li><p>无返回值</p>
+</li>
+</ol>
+<h2 id="ros-Publisher"><a href="#ros-Publisher" class="headerlink" title="ros::Publisher"></a>ros::Publisher</h2><p><code> ros::Publisher pub = nh.advertise &lt; std_msgs::String &gt;(&quot;name of topic&quot;,frequency,latch)</code></p>
+<p>​		创建一个发布者对象。其中，各参数的意义如下：</p>
+<ol>
+<li>name of node</li>
+</ol>
+<p>​		该参数用于指定发布者对象的发布话题是什么，可以自定义但要记得节点名称具有唯一性</p>
+<ol start="2">
+<li>nh.advertise&lt;&gt;</li>
+</ol>
+<p>​		用于指定是发布对象，假使要为接受方，则为subscribe&lt;&gt;。</p>
+<p>​		尖括号内事消息的格式，后面还有geometry_msg类型，可以自我定义 </p>
+<ol start="2">
+<li><p>frequency</p>
+<p>用于指定发布的评论，单位为Hz。比如我们这里填写10，那么就是一秒钟发布10个消息</p>
+</li>
+<li><p>latch</p>
+<p>optional的选项，即可以写也可以不写使用默认值，是一个额外的对象。</p>
+<p>该值如果为true，那么发布方就会将最后发布的消息储存，当有新的订阅者连接到它时，就会再将这个信息发布出去</p>
+</li>
+<li><p>pub.publish是其返回值</p>
+</li>
+</ol>
+<h2 id="ros-Subscriber"><a href="#ros-Subscriber" class="headerlink" title="ros::Subscriber"></a>ros::Subscriber</h2><p><code>ros::Subscriber sub = nh.subscribe(&quot;topic_name&quot;, queue_size, callback_function)</code></p>
+<p>创建一个订阅者对象</p>
+<ol>
+<li><p>“topic_name”</p>
+<p>话题名称，不再过多介绍</p>
+</li>
+<li><p>queue_size</p>
+<p>队列长度，当接受到的消息数量大于队列长度时，队列会将最开始收到的信息出队，这里用到的知识是队列的FIFO（First in first out）知识</p>
+</li>
+<li><p>call_backfunction</p>
+<p>回调函数，在接受到消息时，配合spin&#x2F;spinonce函数可以达到不断调用该函数的功能。</p>
+<p>例如，我想在接受到一个函数信息时，就发布“我接受到的消息是：+xxx”，那么代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ros/ros.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;std_msgs/String.h&quot;</span></span><br><br><span class="hljs-comment">// 回调函数定义</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">chatterCallback</span><span class="hljs-params">(<span class="hljs-type">const</span> std_msgs::String::ConstPtr&amp; msg)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;I heard: [%s]&quot;</span>, msg-&gt;data.<span class="hljs-built_in">c_str</span>());<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 初始化ROS节点</span><br>  ros::<span class="hljs-built_in">init</span>(argc, argv, <span class="hljs-string">&quot;listener&quot;</span>);<br><br>  <span class="hljs-comment">// 创建节点句柄</span><br>  ros::NodeHandle n;<br><br>  <span class="hljs-comment">// 订阅消息，并注册回调函数</span><br>  ros::Subscriber sub = n.<span class="hljs-built_in">subscribe</span>(<span class="hljs-string">&quot;chatter&quot;</span>, <span class="hljs-number">1000</span>, chatterCallback);<br><br>  <span class="hljs-comment">// 循环等待消息</span><br>  ros::<span class="hljs-built_in">spin</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="spin-spinOnce"><a href="#spin-spinOnce" class="headerlink" title="spin&#x2F;spinOnce"></a>spin&#x2F;spinOnce</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">spin</span>();<br>ros::<span class="hljs-built_in">spinOnce</span>();<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><h3 id="ros-spin"><a href="#ros-spin" class="headerlink" title="ros::spin();"></a>ros::spin();</h3><p>会一直前面的回调函数位置，其后的内容无法执行</p>
+</li>
+<li><h3 id="ros-spinOnce"><a href="#ros-spinOnce" class="headerlink" title="ros::spinOnce();"></a>ros::spinOnce();</h3><p>仅仅回调一次，其后的内容在回调一次后又会执行</p>
+</li>
+</ul>
+<h2 id="ros-Time-now"><a href="#ros-Time-now" class="headerlink" title="ros:Time::now()"></a>ros:Time::now()</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">init</span>(argc,argv,<span class="hljs-string">&quot;hello_time&quot;</span>);<br>ros::NodeHandle nh;<br>ros::Time right_now = ros::Time::<span class="hljs-built_in">now</span>();<span class="hljs-comment">//将当前时刻封装成对象</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%.2f&quot;</span>,right_now.<span class="hljs-built_in">toSec</span>());<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%d&quot;</span>,right_now.sec);<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime</span><span class="hljs-params">(<span class="hljs-number">100</span>,<span class="hljs-number">100000000</span>)</span></span>;<span class="hljs-comment">// 参数1:秒数  参数2:纳秒</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime.<span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.10</span><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime2</span><span class="hljs-params">(<span class="hljs-number">100.3</span>)</span></span>;<br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime<span class="hljs-number">2.</span><span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.30</span><br><br></code></pre></td></tr></table></figure>
+
+<p>该函数可以返回当程序调用它时举例1970年1月1日8点的时间戳</p>
+<p>1.在使用该函数时，必须使用Nodehandle进行初始化，否则时间没有初始化该函数无法调用</p>
+<ol start="2">
+<li></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">right_now.<span class="hljs-built_in">toSec</span>()<br></code></pre></td></tr></table></figure>
+
+<p>可以将right_now的值转换为秒数</p>
+<ol start="3">
+<li></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Time <span class="hljs-title">someTime</span><span class="hljs-params">(<span class="hljs-number">100</span>,<span class="hljs-number">100000000</span>)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>设置一个sometime的值为100秒+1000000纳秒，也可以这样设置：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Time <span class="hljs-title">someTime2</span><span class="hljs-params">(<span class="hljs-number">100.3</span>)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>ros::time相减可以，相加不可以。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Time begin = ros::Time::<span class="hljs-built_in">now</span>();<br><span class="hljs-function">ros::Duration <span class="hljs-title">dul</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span></span>;<br>ros::Time end = begin + dul;<br><br>ros::Duration du2 = end - begin; <br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>duration之间可以任意相加</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino">ros::Duration du3 = du2 - dul;<br>ros::Duration du4 = du2 + dul;<br><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="ros-Rate"><a href="#ros-Rate" class="headerlink" title="ros::Rate"></a>ros::Rate</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs scss">ros::Rate <span class="hljs-built_in">rate_20hz</span>(<span class="hljs-number">20</span>); <span class="hljs-comment">// 创建一个20Hz的频率对象</span><br>while (true)<br>&#123;<br>    messenger<span class="hljs-selector-class">.PublishStateToROS</span>();<br>    ros::<span class="hljs-built_in">spinOnce</span>();<br>    rate_20hz<span class="hljs-selector-class">.sleep</span>();<br>&#125;<br>   <br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="ros-Timer"><a href="#ros-Timer" class="headerlink" title="ros::Timer"></a>ros::Timer</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Timer <span class="hljs-title">createTimer</span><span class="hljs-params">(ros::Duration period, <span class="hljs-type">const</span> ros::TimerCallback &amp;callback,<span class="hljs-type">bool</span> oneshot = <span class="hljs-literal">false</span>,<span class="hljs-type">bool</span> autostart <span class="hljs-literal">true</span>)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>创建一个定时器对象</p>
+<p>其中，各参数的含义如下：</p>
+<ul>
+<li>ros::Duration period 定时器周期</li>
+<li>const ros::TimerCallback &amp;callback 回调函数</li>
+<li>bool oneshot &#x3D; false 是否只执行一次</li>
+<li>bool autostart true 是否自动启动</li>
+</ul>
+<p>常常与ros::Spin()函数一起使用</p>
+<p>使用案例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Timer timer = nh.<span class="hljs-built_in">createTimer</span>(ros::<span class="hljs-built_in">Duration</span>(<span class="hljs-number">1</span>),cb);<br>ros::<span class="hljs-built_in">spin</span>();<br></code></pre></td></tr></table></figure>
+
+<p>和创建订阅对象是类似的</p>
+<p>当bool autostart &#x3D; false时，如果想要开启定时器，那么可以用以下语句：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">timer.<span class="hljs-built_in">start</span>();<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="ros-Shutdown"><a href="#ros-Shutdown" class="headerlink" title="ros::Shutdown()"></a>ros::Shutdown()</h2><p>可以关闭主节点，配合<code>while(ros::OK());</code>使用</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ROS中常用API</div>
+      <div>http://example.com/2024/12/01/ROS中常用API/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Wu Xuanye</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 1, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" title="stm32定时器学习笔记（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">stm32定时器学习笔记（一）</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/" title="ROS自定义消息">
+                        <span class="hidden-mobile">ROS自定义消息</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

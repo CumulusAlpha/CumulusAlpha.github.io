@@ -227,6 +227,201 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" target="_self">
+          stm32定时器学习笔记（三）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" target="_self">
+        <div>
+          STM32 定时器（TIM）学习笔记（三）Part 3. 输入捕获模式1. 简介输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。 输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。 所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。 (1213.png) PWMI模式
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-01 18:15" pubdate>
+              2024-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Embedded-System/" class="category-chain-item">Embedded System</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          stm32定时器学习笔记（二）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+        <div>
+          stm32 定时器（TIM）学习笔记（二）Part 2.TIM输出比较输出比较： 通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。 可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。 每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。 更值得一提的是，高级定时器的前3个
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-01 18:11" pubdate>
+              2024-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Embedded-System/" class="category-chain-item">Embedded System</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          stm32定时器学习笔记（一）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+        <div>
+          stm32定时器（TIM)学习笔记定时器本质上就是一个计数器： 现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。 例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。  在这个游戏中，小明就是输入的时钟，小红就是计数器。 Part.1 TIM定时中断1.时基单元  计数器CNT :当有时钟源输入时，边开始计数。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-01 18:05" pubdate>
+              2024-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Embedded-System/" class="category-chain-item">Embedded System</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/01/ROS%E4%B8%AD%E5%B8%B8%E7%94%A8API/" target="_self">
+          ROS中常用API
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/01/ROS%E4%B8%AD%E5%B8%B8%E7%94%A8API/" target="_self">
+        <div>
+          ROS常用APIros::init()ros::init( argc, argv, &quot;name of node&quot;,option)该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；  argv： 该参数是向其中传入的参数的数组，即假设我们向其中传入了
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-01 18:00" pubdate>
+              2024-12-01
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/" target="_self">
           ROS自定义消息
         </a>
