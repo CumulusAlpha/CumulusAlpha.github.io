@@ -19,12 +19,12 @@
   <meta name="author" content="Wu Xuanye">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ROS 自定义消息一.概论std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。 自定义msgs有点想结构体 二.具体实现1.按照固定格式创建Msgs文件在现有的功能包下新建Msg文件夹，在其中添加文件person.msg   2.配置xml与cmake package.xml    cmakelist      find_pack">
+    <meta name="description" content="ROS 自定义消息 一.概论 std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。 自定义msgs有点想结构体 二.具体实现 1.按照固定格式创建Msgs文件 在现有的功能包下新建Msg文件夹，在其中添加文件person.msg   image-20240313204714163  2.配置xml与cmake">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROS自定义消息">
 <meta property="og:url" content="http://example.com/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/index.html">
 <meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
-<meta property="og:description" content="ROS 自定义消息一.概论std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。 自定义msgs有点想结构体 二.具体实现1.按照固定格式创建Msgs文件在现有的功能包下新建Msg文件夹，在其中添加文件person.msg   2.配置xml与cmake package.xml    cmakelist      find_pack">
+<meta property="og:description" content="ROS 自定义消息 一.概论 std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。 自定义msgs有点想结构体 二.具体实现 1.按照固定格式创建Msgs文件 在现有的功能包下新建Msg文件夹，在其中添加文件person.msg   image-20240313204714163  2.配置xml与cmake">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/1st.png">
 <meta property="og:image" content="http://example.com/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313204826620.png">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          626 words
+          640 words
         
       </span>
     
@@ -289,64 +289,110 @@
             
               <div class="markdown-body">
                 
-                <h1 id="ROS-自定义消息"><a href="#ROS-自定义消息" class="headerlink" title="ROS 自定义消息"></a>ROS 自定义消息</h1><h2 id="一-概论"><a href="#一-概论" class="headerlink" title="一.概论"></a>一.概论</h2><p>std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。</p>
+                <h1 id="ros-自定义消息">ROS 自定义消息</h1>
+<h2 id="一.概论">一.概论</h2>
+<p>std_msgs实在太弱了，能发出来的东西太少，所以我们想要自己定义一些信息，这样消息容量更多，能够传递更加复杂的消息。</p>
 <p>自定义msgs有点想结构体</p>
-<h2 id="二-具体实现"><a href="#二-具体实现" class="headerlink" title="二.具体实现"></a>二.具体实现</h2><h3 id="1-按照固定格式创建Msgs文件"><a href="#1-按照固定格式创建Msgs文件" class="headerlink" title="1.按照固定格式创建Msgs文件"></a>1.按照固定格式创建Msgs文件</h3><p>在现有的功能包下新建Msg文件夹，在其中添加文件person.msg </p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/1st.png" srcset="/img/loading.gif" lazyload alt="image-20240313204714163"></p>
-<h2 id="2-配置xml与cmake"><a href="#2-配置xml与cmake" class="headerlink" title="2.配置xml与cmake"></a>2.配置xml与cmake</h2><ol>
+<h2 id="二.具体实现">二.具体实现</h2>
+<h3 id="按照固定格式创建msgs文件">1.按照固定格式创建Msgs文件</h3>
+<p>在现有的功能包下新建Msg文件夹，在其中添加文件person.msg</p>
+<figure>
+<img src="1st.png" srcset="/img/loading.gif" lazyload alt="image-20240313204714163" />
+<figcaption aria-hidden="true">image-20240313204714163</figcaption>
+</figure>
+<h2 id="配置xml与cmake">2.配置xml与cmake</h2>
+<ol type="1">
 <li>package.xml</li>
 </ol>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313204826620.png" srcset="/img/loading.gif" lazyload alt="image-20240313204826620"></p>
-<ol start="2">
+<figure>
+<img src="image-20240313204826620.png" srcset="/img/loading.gif" lazyload alt="image-20240313204826620" />
+<figcaption aria-hidden="true">image-20240313204826620</figcaption>
+</figure>
+<ol start="2" type="1">
 <li>cmakelist</li>
 </ol>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313204911908.png" srcset="/img/loading.gif" lazyload alt="image-20240313204911908"></p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313205117490.png" srcset="/img/loading.gif" lazyload alt="image-20240313205117490"></p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313205156540.png" srcset="/img/loading.gif" lazyload alt="image-20240313205156540"></p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313205303043.png" srcset="/img/loading.gif" lazyload alt="image-20240313205303043"></p>
+<figure>
+<img src="image-20240313204911908.png" srcset="/img/loading.gif" lazyload alt="image-20240313204911908" />
+<figcaption aria-hidden="true">image-20240313204911908</figcaption>
+</figure>
+<figure>
+<img src="image-20240313205117490.png" srcset="/img/loading.gif" lazyload alt="image-20240313205117490" />
+<figcaption aria-hidden="true">image-20240313205117490</figcaption>
+</figure>
+<figure>
+<img src="image-20240313205156540.png" srcset="/img/loading.gif" lazyload alt="image-20240313205156540" />
+<figcaption aria-hidden="true">image-20240313205156540</figcaption>
+</figure>
+<figure>
+<img src="image-20240313205303043.png" srcset="/img/loading.gif" lazyload alt="image-20240313205303043" />
+<figcaption aria-hidden="true">image-20240313205303043</figcaption>
+</figure>
 <p>find_package是编译时的依赖，catkin_package是运行时的依赖</p>
-<h2 id="3-编译"><a href="#3-编译" class="headerlink" title="3. 编译"></a>3. 编译</h2><p>Shift+ctrl+B后会在devel中生成中间文件，包括但不限于头文件等</p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313210129284.png" srcset="/img/loading.gif" lazyload alt="image-20240313210129284"></p>
-<h2 id="三、-发布方实现"><a href="#三、-发布方实现" class="headerlink" title="三、 发布方实现"></a>三、 发布方实现</h2><p>为了方便代码提示以及避免误抛异常，需要先配置 vscode，将前面生成的 head 文件路径配置进<br>c_cpp_properties.json 的includepath属性，下面为具体步骤</p>
-<ol>
+<h2 id="编译">3. 编译</h2>
+<p>Shift+ctrl+B后会在devel中生成中间文件，包括但不限于头文件等</p>
+<figure>
+<img src="image-20240313210129284.png" srcset="/img/loading.gif" lazyload alt="image-20240313210129284" />
+<figcaption aria-hidden="true">image-20240313210129284</figcaption>
+</figure>
+<h2 id="三-发布方实现">三、 发布方实现</h2>
+<p>为了方便代码提示以及避免误抛异常，需要先配置 vscode，将前面生成的
+head 文件路径配置进 c_cpp_properties.json
+的includepath属性，下面为具体步骤</p>
+<ol type="1">
 <li>在终端打开该文件</li>
 </ol>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313210146485.png" srcset="/img/loading.gif" lazyload alt="image-20240313210146485"></p>
-<ol start="2">
+<figure>
+<img src="image-20240313210146485.png" srcset="/img/loading.gif" lazyload alt="image-20240313210146485" />
+<figcaption aria-hidden="true">image-20240313210146485</figcaption>
+</figure>
+<ol start="2" type="1">
 <li>在终端输入pwd，复制所得的路径</li>
 </ol>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313210400551.png" srcset="/img/loading.gif" lazyload alt="image-20240313210400551"></p>
-<ol start="3">
+<figure>
+<img src="image-20240313210400551.png" srcset="/img/loading.gif" lazyload alt="image-20240313210400551" />
+<figcaption aria-hidden="true">image-20240313210400551</figcaption>
+</figure>
+<ol start="3" type="1">
 <li>在c_cpp_properties.json文件下新增一行这个，注意之前的要打逗号结束语句</li>
 </ol>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313210457795.png" srcset="/img/loading.gif" lazyload alt="image-20240313210457795"></p>
+<figure>
+<img src="image-20240313210457795.png" srcset="/img/loading.gif" lazyload alt="image-20240313210457795" />
+<figcaption aria-hidden="true">image-20240313210457795</figcaption>
+</figure>
 <p>4.引用头文件，注意要有文件路径前缀</p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313210744668.png" srcset="/img/loading.gif" lazyload alt="image-20240313210744668"></p>
+<figure>
+<img src="image-20240313210744668.png" srcset="/img/loading.gif" lazyload alt="image-20240313210744668" />
+<figcaption aria-hidden="true">image-20240313210744668</figcaption>
+</figure>
 <p>5.接下来按照订阅进行操作即可，一直到创建发布者对象使用如下代码</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Publisher pub = advertise &lt;plumbing_pub_sub::Person&gt;(<span class="hljs-string">&quot;liaotian&quot;</span>,<span class="hljs-number">10</span>);<br></code></pre></td></tr></table></figure>
-
 <p>6.创建被发布的东西</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">plumbing_pub_sub::Person person;<br>person.name = <span class="hljs-string">&quot;满孝&quot;</span>;<br>person.age = <span class="hljs-number">114514</span>;<br>person.height = <span class="hljs-number">1.80</span>;<br></code></pre></td></tr></table></figure>
-
-<ol start="7">
+<ol start="7" type="1">
 <li><p>配置add_executable等</p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313211837454.png" srcset="/img/loading.gif" lazyload alt="image-20240313211837454"></p>
-<p><img src="/2024/12/01/ROS%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF/image-20240313211858315.png" srcset="/img/loading.gif" lazyload alt="image-20240313211858315"></p>
-</li>
+<figure>
+<img src="image-20240313211837454.png" srcset="/img/loading.gif" lazyload alt="image-20240313211837454" />
+<figcaption aria-hidden="true">image-20240313211837454</figcaption>
+</figure>
+<figure>
+<img src="image-20240313211858315.png" srcset="/img/loading.gif" lazyload alt="image-20240313211858315" />
+<figcaption aria-hidden="true">image-20240313211858315</figcaption>
+</figure></li>
 <li><p>因为使用了自定义消息，所以还需要配置add_dependencies</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_dependencies</span>(和<span class="hljs-keyword">add_executable</span>后的第一个参数一样  <span class="hljs-variable">$&#123;PROJECT_NAME&#125;</span>_generate_messages_cpp)<br></code></pre></td></tr></table></figure>
-
-<p>注意，如果想用rostopic echo来查看所发的消息，那么在这个命令之前也要source一下，即</p>
+<p>注意，如果想用rostopic
+echo来查看所发的消息，那么在这个命令之前也要source一下，即</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">source ./devel/setup.bash<br></code></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="完整的代码如下"><a href="#完整的代码如下" class="headerlink" title="完整的代码如下"></a>完整的代码如下</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/*</span><br><span class="hljs-comment">    需求: 循环发布人的信息</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ros/ros.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;demo02_talker_listener/Person.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">setlocale</span>(LC_ALL,<span class="hljs-string">&quot;&quot;</span>);<br><br>    <span class="hljs-comment">//1.初始化 ROS 节点</span><br>    ros::<span class="hljs-built_in">init</span>(argc,argv,<span class="hljs-string">&quot;talker_person&quot;</span>);<br><br>    <span class="hljs-comment">//2.创建 ROS 句柄</span><br>    ros::NodeHandle nh;<br><br>    <span class="hljs-comment">//3.创建发布者对象</span><br>    ros::Publisher pub = nh.<span class="hljs-built_in">advertise</span>&lt;demo02_talker_listener::Person&gt;(<span class="hljs-string">&quot;chatter_person&quot;</span>,<span class="hljs-number">1000</span>);<br><br>    <span class="hljs-comment">//4.组织被发布的消息，编写发布逻辑并发布消息</span><br>    demo02_talker_listener::Person p;<br>    p.name = <span class="hljs-string">&quot;sunwukong&quot;</span>;<br>    p.age = <span class="hljs-number">2000</span>;<br>    p.height = <span class="hljs-number">1.45</span>;<br><br>    <span class="hljs-function">ros::Rate <span class="hljs-title">r</span><span class="hljs-params">(<span class="hljs-number">1</span>)</span></span>;<br>    <span class="hljs-keyword">while</span> (ros::<span class="hljs-built_in">ok</span>())<br>    &#123;<br>        pub.<span class="hljs-built_in">publish</span>(p);<br>        p.age += <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;我叫:%s,今年%d岁,高%.2f米&quot;</span>, p.name.<span class="hljs-built_in">c_str</span>(), p.age, p.height);<br><br>        r.<span class="hljs-built_in">sleep</span>();<br>        ros::<span class="hljs-built_in">spinOnce</span>();<br>    &#125;<br><br><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
-<h2 id="订阅方实现"><a href="#订阅方实现" class="headerlink" title="订阅方实现"></a>订阅方实现</h2><p>其他都无大差别</p>
+<h2 id="完整的代码如下">完整的代码如下</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/*</span><br><span class="hljs-comment">    需求: 循环发布人的信息</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ros/ros.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;demo02_talker_listener/Person.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">setlocale</span>(LC_ALL,<span class="hljs-string">&quot;&quot;</span>);<br><br>    <span class="hljs-comment">//1.初始化 ROS 节点</span><br>    ros::<span class="hljs-built_in">init</span>(argc,argv,<span class="hljs-string">&quot;talker_person&quot;</span>);<br><br>    <span class="hljs-comment">//2.创建 ROS 句柄</span><br>    ros::NodeHandle nh;<br><br>    <span class="hljs-comment">//3.创建发布者对象</span><br>    ros::Publisher pub = nh.<span class="hljs-built_in">advertise</span>&lt;demo02_talker_listener::Person&gt;(<span class="hljs-string">&quot;chatter_person&quot;</span>,<span class="hljs-number">1000</span>);<br><br>    <span class="hljs-comment">//4.组织被发布的消息，编写发布逻辑并发布消息</span><br>    demo02_talker_listener::Person p;<br>    p.name = <span class="hljs-string">&quot;sunwukong&quot;</span>;<br>    p.age = <span class="hljs-number">2000</span>;<br>    p.height = <span class="hljs-number">1.45</span>;<br><br>    <span class="hljs-function">ros::Rate <span class="hljs-title">r</span><span class="hljs-params">(<span class="hljs-number">1</span>)</span></span>;<br>    <span class="hljs-keyword">while</span> (ros::<span class="hljs-built_in">ok</span>())<br>    &#123;<br>        pub.<span class="hljs-built_in">publish</span>(p);<br>        p.age += <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;我叫:%s,今年%d岁,高%.2f米&quot;</span>, p.name.<span class="hljs-built_in">c_str</span>(), p.age, p.height);<br><br>        r.<span class="hljs-built_in">sleep</span>();<br>        ros::<span class="hljs-built_in">spinOnce</span>();<br>    &#125;<br><br><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h2 id="订阅方实现">订阅方实现</h2>
+<p>其他都无大差别</p>
 <p>这里需要注意的是，发布者定义时可以不指名是何种消息</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Subscriber sub = nh.<span class="hljs-built_in">subscribe</span>(<span class="hljs-string">&quot;liaotian&quot;</span>,<span class="hljs-number">10</span>,doPerson)<br></code></pre></td></tr></table></figure>
-
 <p>具体参数可以参阅我之前写的ros中常用API一文：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_73092398/article/details/136544192">ros中常用的API-CSDN博客</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/m0_73092398/article/details/136544192">ros中常用的API-CSDN博客</a></p>
 
                 
               </div>

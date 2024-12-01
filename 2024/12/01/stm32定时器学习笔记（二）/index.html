@@ -19,12 +19,12 @@
   <meta name="author" content="Wu Xuanye">
   <meta name="keywords" content="">
   
-    <meta name="description" content="stm32 定时器（TIM）学习笔记（二）Part 2.TIM输出比较输出比较： 通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。 可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。 每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。 更值得一提的是，高级定时器的前3个">
+    <meta name="description" content="stm32 定时器（TIM）学习笔记（二） Part 2.TIM输出比较 输出比较： 通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。 可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。 每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。 更值得一提的是，高级定时器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="stm32定时器学习笔记（二）">
 <meta property="og:url" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
-<meta property="og:description" content="stm32 定时器（TIM）学习笔记（二）Part 2.TIM输出比较输出比较： 通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。 可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。 每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。 更值得一提的是，高级定时器的前3个">
+<meta property="og:description" content="stm32 定时器（TIM）学习笔记（二） Part 2.TIM输出比较 输出比较： 通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。 可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。 每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。 更值得一提的是，高级定时器">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316182430100.png">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316182829650.png">
@@ -286,139 +286,180 @@
             
               <div class="markdown-body">
                 
-                <h1 id="stm32-定时器（TIM）学习笔记（二）"><a href="#stm32-定时器（TIM）学习笔记（二）" class="headerlink" title="stm32 定时器（TIM）学习笔记（二）"></a>stm32 定时器（TIM）学习笔记（二）</h1><h1 id="Part-2-TIM输出比较"><a href="#Part-2-TIM输出比较" class="headerlink" title="Part 2.TIM输出比较"></a>Part 2.TIM输出比较</h1><p>输出比较：</p>
-<p>通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。</p>
+                <h1 id="stm32-定时器tim学习笔记二">stm32
+定时器（TIM）学习笔记（二）</h1>
+<h1 id="part-2.tim输出比较">Part 2.TIM输出比较</h1>
+<p>输出比较：</p>
+<p>通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1/0或者翻转的的操作。</p>
 <p>可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。</p>
 <p>每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。</p>
 <p>更值得一提的是，高级定时器的前3个通道额外用用死区生成和互补输出的功能。</p>
-<h2 id="1-几个寄存器的英文及其缩写"><a href="#1-几个寄存器的英文及其缩写" class="headerlink" title="1. 几个寄存器的英文及其缩写"></a>1. 几个寄存器的英文及其缩写</h2><table>
+<h2 id="几个寄存器的英文及其缩写">1. 几个寄存器的英文及其缩写</h2>
+<table>
 <thead>
 <tr>
-<th align="center">英文全称</th>
-<th align="center">中文</th>
-<th align="center">缩写</th>
+<th style="text-align: center;">英文全称</th>
+<th style="text-align: center;">中文</th>
+<th style="text-align: center;">缩写</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">Output Compare</td>
-<td align="center">输出比较</td>
-<td align="center">OC</td>
+<tbody>
+<tr>
+<td style="text-align: center;">Output Compare</td>
+<td style="text-align: center;">输出比较</td>
+<td style="text-align: center;">OC</td>
 </tr>
 <tr>
-<td align="center">InputCapture</td>
-<td align="center">输入捕获</td>
-<td align="center">IC</td>
+<td style="text-align: center;">InputCapture</td>
+<td style="text-align: center;">输入捕获</td>
+<td style="text-align: center;">IC</td>
 </tr>
 <tr>
-<td align="center">Capture&#x2F;Compare</td>
-<td align="center">输入捕获与输出比较单元</td>
-<td align="center">CC</td>
+<td style="text-align: center;">Capture/Compare</td>
+<td style="text-align: center;">输入捕获与输出比较单元</td>
+<td style="text-align: center;">CC</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
-</tbody></table>
-<h2 id="2-PWM"><a href="#2-PWM" class="headerlink" title="2.PWM"></a>2.PWM</h2><h3 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316182430100.png" srcset="/img/loading.gif" lazyload alt="image-20240316182430100"></p>
-<h3 id="2-2-输出比较模式"><a href="#2-2-输出比较模式" class="headerlink" title="2.2 输出比较模式"></a>2.2 输出比较模式</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316182829650.png" srcset="/img/loading.gif" lazyload alt="image-20240316182829650"></p>
+</tbody>
+</table>
+<h2 id="pwm">2.PWM</h2>
+<h3 id="简介">2.1 简介</h3>
+<figure>
+<img src="image-20240316182430100.png" srcset="/img/loading.gif" lazyload alt="image-20240316182430100" />
+<figcaption aria-hidden="true">image-20240316182430100</figcaption>
+</figure>
+<h3 id="输出比较模式">2.2 输出比较模式</h3>
+<figure>
+<img src="image-20240316182829650.png" srcset="/img/loading.gif" lazyload alt="image-20240316182829650" />
+<figcaption aria-hidden="true">image-20240316182829650</figcaption>
+</figure>
 <p>有效电平：高电平；无效电平：低电平。</p>
 <p>PWM1和PWM2模式相似，仅仅只有电平不同，所以在实际使用的过程中完全可以按照PWM1使用即可</p>
-<h3 id="2-3-原理图"><a href="#2-3-原理图" class="headerlink" title="2.3 原理图"></a>2.3 原理图</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316183552303.png" srcset="/img/loading.gif" lazyload alt="image-20240316183552303"></p>
+<h3 id="原理图">2.3 原理图</h3>
+<figure>
+<img src="image-20240316183552303.png" srcset="/img/loading.gif" lazyload alt="image-20240316183552303" />
+<figcaption aria-hidden="true">image-20240316183552303</figcaption>
+</figure>
 <p>这个图中，蓝色线是CNT的值，黄色线是ARR的值，红色线是CCR的值</p>
 <p>当CNT自增时，他会先小于CCR，然后大于CCR，最后来到ARR时又会清零，并且不断重复这个过程。</p>
 <p>我们可以在小于的部分输出低电平，大于的电平输出高电平，如此方可输出一个PWM波。</p>
-<h3 id="2-4-参数计算"><a href="#2-4-参数计算" class="headerlink" title="2.4 参数计算"></a>2.4 参数计算</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316184227783.png" srcset="/img/loading.gif" lazyload alt="image-20240316184227783"></p>
-<h3 id="2-5-TB6612电机驱动"><a href="#2-5-TB6612电机驱动" class="headerlink" title="2.5 TB6612电机驱动"></a>2.5 TB6612电机驱动</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316190634893.png" srcset="/img/loading.gif" lazyload alt="image-20240316190634893"></p>
-<h2 id="3-代码实现-PWM驱动LED呼吸灯"><a href="#3-代码实现-PWM驱动LED呼吸灯" class="headerlink" title="3 代码实现-PWM驱动LED呼吸灯"></a>3 代码实现-PWM驱动LED呼吸灯</h2><h3 id="3-1-Init"><a href="#3-1-Init" class="headerlink" title="3.1 Init"></a>3.1 Init</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCxInit(TIMy, &amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
-
+<h3 id="参数计算">2.4 参数计算</h3>
+<figure>
+<img src="image-20240316184227783.png" srcset="/img/loading.gif" lazyload alt="image-20240316184227783" />
+<figcaption aria-hidden="true">image-20240316184227783</figcaption>
+</figure>
+<h3 id="tb6612电机驱动">2.5 TB6612电机驱动</h3>
+<figure>
+<img src="image-20240316190634893.png" srcset="/img/loading.gif" lazyload alt="image-20240316190634893" />
+<figcaption aria-hidden="true">image-20240316190634893</figcaption>
+</figure>
+<h2 id="代码实现-pwm驱动led呼吸灯">3 代码实现-PWM驱动LED呼吸灯</h2>
+<h3 id="init">3.1 Init</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCxInit(TIMy, &amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
 <p>配置输出比较单元，x可以是1，2，3，4四个数中任一的值，y也是。</p>
 <p>这说明共有四个输出比较单元可供配置。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCStructInit(&amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
-
 <p>配置结构体</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_SetComparex(TIMy, Compare)<br></code></pre></td></tr></table></figure>
-
 <p>设置占空比函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCInitTypeDef TIM_OCInitStructure;<br>TIM_OCStructInit(&amp;TIM_OCInitStructure);<br><span class="hljs-comment">// 为了防止没有赋值的情况出现，先把所有值赋好</span><br>	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;<br><span class="hljs-comment">//OC模式，请看上面的截图，使用时可以跳转到定义自己一个一个选</span><br>TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;<br>	<span class="hljs-comment">//选择有效电平是高电平还是低电平，High是高电平，Low是低电平</span><br>TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;<br><span class="hljs-comment">//输出状态，想要控制电机，必定选择使能</span><br><br>	TIM_OCInitStructure.TIM_Pulse = <span class="hljs-number">0</span>;	<br><span class="hljs-comment">//设置CCR寄存器值</span><br>	TIM_OC1Init(TIM2, &amp;TIM_OCInitStructure);<br>	<span class="hljs-comment">//初始化OC1</span><br></code></pre></td></tr></table></figure>
-
 <p>注意，定时器使用引脚时需要使用复用推挽输出。</p>
 <p>pwm.h</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __PWM_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> __PWM_H</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_SetCompare1</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Compare)</span></span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br></code></pre></td></tr></table></figure>
-
-
-
 <p>pwm.c</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">PWM_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);<br>	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);<br>	<br><span class="hljs-comment">//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);</span><br>	<br>	GPIO_InitTypeDef GPIO_InitStructure;<br>	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;<br>	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;		<span class="hljs-comment">//GPIO_Pin_15;</span><br>	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;<br>	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);<br>	<br>	TIM_InternalClockConfig(TIM2);<br>	<br>	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">100</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//ARR</span><br>	TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">720</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//PSC</span><br>	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br>	TIM_TimeBaseInit(TIM2, &amp;TIM_TimeBaseInitStructure);<br>	<br>	TIM_OCInitTypeDef TIM_OCInitStructure;<br>	TIM_OCStructInit(&amp;TIM_OCInitStructure);<br>	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;<br>	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;<br>	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;<br>	TIM_OCInitStructure.TIM_Pulse = <span class="hljs-number">0</span>;		<span class="hljs-comment">//CCR</span><br>	TIM_OC1Init(TIM2, &amp;TIM_OCInitStructure);<br>	<br>	TIM_Cmd(TIM2, ENABLE);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">PWM_SetCompare1</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Compare)</span><br>&#123;<br>	TIM_SetCompare1(TIM2, Compare);<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
 <p>main.c</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Delay.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;OLED.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;PWM.h&quot;</span></span><br><br><span class="hljs-type">uint8_t</span> i;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	OLED_Init();<br>	PWM_Init();<br>	<br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">100</span>; i++)<br>		&#123;<br>			PWM_SetCompare1(i);<br>			Delay_ms(<span class="hljs-number">10</span>);<br>		&#125;<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">100</span>; i++)<br>		&#123;<br>			PWM_SetCompare1(<span class="hljs-number">100</span> - i);<br>			Delay_ms(<span class="hljs-number">10</span>);<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h1 id="stm32-定时器（TIM）学习笔记（二）-1"><a href="#stm32-定时器（TIM）学习笔记（二）-1" class="headerlink" title="stm32 定时器（TIM）学习笔记（二）"></a>stm32 定时器（TIM）学习笔记（二）</h1><h1 id="Part-2-TIM输出比较-1"><a href="#Part-2-TIM输出比较-1" class="headerlink" title="Part 2.TIM输出比较"></a>Part 2.TIM输出比较</h1><p>输出比较：</p>
-<p>通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1&#x2F;0或者翻转的的操作。</p>
+<h1 id="stm32-定时器tim学习笔记二-1">stm32
+定时器（TIM）学习笔记（二）</h1>
+<h1 id="part-2.tim输出比较-1">Part 2.TIM输出比较</h1>
+<p>输出比较：</p>
+<p>通过比较计数器（CNT)与捕获比较寄存器（CCR）之间的大小关系，来选择输出电平是1/0或者翻转的的操作。</p>
 <p>可以通过该寄存器来输出PWM波，实现控制电机、舵机等任务。</p>
 <p>每个高级定时器与通用定时器都有4个输出比较通道，所以，在制作麦轮小车时，可以只用一个TIM控制四个电机。</p>
 <p>更值得一提的是，高级定时器的前3个通道额外用用死区生成和互补输出的功能。</p>
-<h2 id="1-几个寄存器的英文及其缩写-1"><a href="#1-几个寄存器的英文及其缩写-1" class="headerlink" title="1. 几个寄存器的英文及其缩写"></a>1. 几个寄存器的英文及其缩写</h2><table>
+<h2 id="几个寄存器的英文及其缩写-1">1. 几个寄存器的英文及其缩写</h2>
+<table>
 <thead>
 <tr>
-<th align="center">英文全称</th>
-<th align="center">中文</th>
-<th align="center">缩写</th>
+<th style="text-align: center;">英文全称</th>
+<th style="text-align: center;">中文</th>
+<th style="text-align: center;">缩写</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">Output Compare</td>
-<td align="center">输出比较</td>
-<td align="center">OC</td>
+<tbody>
+<tr>
+<td style="text-align: center;">Output Compare</td>
+<td style="text-align: center;">输出比较</td>
+<td style="text-align: center;">OC</td>
 </tr>
 <tr>
-<td align="center">InputCapture</td>
-<td align="center">输入捕获</td>
-<td align="center">IC</td>
+<td style="text-align: center;">InputCapture</td>
+<td style="text-align: center;">输入捕获</td>
+<td style="text-align: center;">IC</td>
 </tr>
 <tr>
-<td align="center">Capture&#x2F;Compare</td>
-<td align="center">输入捕获与输出比较单元</td>
-<td align="center">CC</td>
+<td style="text-align: center;">Capture/Compare</td>
+<td style="text-align: center;">输入捕获与输出比较单元</td>
+<td style="text-align: center;">CC</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
-</tbody></table>
-<h2 id="2-PWM-1"><a href="#2-PWM-1" class="headerlink" title="2.PWM"></a>2.PWM</h2><h3 id="2-1-简介-1"><a href="#2-1-简介-1" class="headerlink" title="2.1 简介"></a>2.1 简介</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20240316182430101.png" srcset="/img/loading.gif" lazyload alt="image-20240316182430100"></p>
-<h3 id="2-2-输出比较模式-1"><a href="#2-2-输出比较模式-1" class="headerlink" title="2.2 输出比较模式"></a>2.2 输出比较模式</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/age-20240316182829650.png" srcset="/img/loading.gif" lazyload alt="image-20240316182829650"></p>
+</tbody>
+</table>
+<h2 id="pwm-1">2.PWM</h2>
+<h3 id="简介-1">2.1 简介</h3>
+<figure>
+<img src="image-20240316182430101.png" srcset="/img/loading.gif" lazyload alt="image-20240316182430100" />
+<figcaption aria-hidden="true">image-20240316182430100</figcaption>
+</figure>
+<h3 id="输出比较模式-1">2.2 输出比较模式</h3>
+<figure>
+<img src="age-20240316182829650.png" srcset="/img/loading.gif" lazyload alt="image-20240316182829650" />
+<figcaption aria-hidden="true">image-20240316182829650</figcaption>
+</figure>
 <p>有效电平：高电平；无效电平：低电平。</p>
 <p>PWM1和PWM2模式相似，仅仅只有电平不同，所以在实际使用的过程中完全可以按照PWM1使用即可</p>
-<h3 id="2-3-原理图-1"><a href="#2-3-原理图-1" class="headerlink" title="2.3 原理图"></a>2.3 原理图</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-203552303.png" srcset="/img/loading.gif" lazyload alt="image-20240316183552303"></p>
+<h3 id="原理图-1">2.3 原理图</h3>
+<figure>
+<img src="image-203552303.png" srcset="/img/loading.gif" lazyload alt="image-20240316183552303" />
+<figcaption aria-hidden="true">image-20240316183552303</figcaption>
+</figure>
 <p>这个图中，蓝色线是CNT的值，黄色线是ARR的值，红色线是CCR的值</p>
 <p>当CNT自增时，他会先小于CCR，然后大于CCR，最后来到ARR时又会清零，并且不断重复这个过程。</p>
 <p>我们可以在小于的部分输出低电平，大于的电平输出高电平，如此方可输出一个PWM波。</p>
-<h3 id="2-4-参数计算-1"><a href="#2-4-参数计算-1" class="headerlink" title="2.4 参数计算"></a>2.4 参数计算</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-20243.png" srcset="/img/loading.gif" lazyload alt="image-20240316184227783"></p>
-<h3 id="2-5-TB6612电机驱动-1"><a href="#2-5-TB6612电机驱动-1" class="headerlink" title="2.5 TB6612电机驱动"></a>2.5 TB6612电机驱动</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/image-234893.png" srcset="/img/loading.gif" lazyload alt="image-20240316190634893"></p>
-<h2 id="3-代码实现-PWM驱动LED呼吸灯-1"><a href="#3-代码实现-PWM驱动LED呼吸灯-1" class="headerlink" title="3 代码实现-PWM驱动LED呼吸灯"></a>3 代码实现-PWM驱动LED呼吸灯</h2><h3 id="3-1-Init-1"><a href="#3-1-Init-1" class="headerlink" title="3.1 Init"></a>3.1 Init</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCxInit(TIMy, &amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
-
+<h3 id="参数计算-1">2.4 参数计算</h3>
+<figure>
+<img src="image-20243.png" srcset="/img/loading.gif" lazyload alt="image-20240316184227783" />
+<figcaption aria-hidden="true">image-20240316184227783</figcaption>
+</figure>
+<h3 id="tb6612电机驱动-1">2.5 TB6612电机驱动</h3>
+<figure>
+<img src="image-234893.png" srcset="/img/loading.gif" lazyload alt="image-20240316190634893" />
+<figcaption aria-hidden="true">image-20240316190634893</figcaption>
+</figure>
+<h2 id="代码实现-pwm驱动led呼吸灯-1">3 代码实现-PWM驱动LED呼吸灯</h2>
+<h3 id="init-1">3.1 Init</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCxInit(TIMy, &amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
 <p>配置输出比较单元，x可以是1，2，3，4四个数中任一的值，y也是。</p>
 <p>这说明共有四个输出比较单元可供配置。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCStructInit(&amp;TIM_OCInitStructure)<br></code></pre></td></tr></table></figure>
-
 <p>配置结构体</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_SetComparex(TIMy, Compare)<br></code></pre></td></tr></table></figure>
-
 <p>设置占空比函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_OCInitTypeDef TIM_OCInitStructure;<br>TIM_OCStructInit(&amp;TIM_OCInitStructure);<br><span class="hljs-comment">// 为了防止没有赋值的情况出现，先把所有值赋好</span><br>	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;<br><span class="hljs-comment">//OC模式，请看上面的截图，使用时可以跳转到定义自己一个一个选</span><br>TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;<br>	<span class="hljs-comment">//选择有效电平是高电平还是低电平，High是高电平，Low是低电平</span><br>TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;<br><span class="hljs-comment">//输出状态，想要控制电机，必定选择使能</span><br><br>	TIM_OCInitStructure.TIM_Pulse = <span class="hljs-number">0</span>;	<br><span class="hljs-comment">//设置CCR寄存器值</span><br>	TIM_OC1Init(TIM2, &amp;TIM_OCInitStructure);<br>	<span class="hljs-comment">//初始化OC1</span><br></code></pre></td></tr></table></figure>
-
 <p>注意，定时器使用引脚时需要使用复用推挽输出。</p>
 <p>pwm.h</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __PWM_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> __PWM_H</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_SetCompare1</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Compare)</span></span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br></code></pre></td></tr></table></figure>
-
-
-
 <p>pwm.c</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">PWM_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);<br>	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);<br>	<br><span class="hljs-comment">//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);</span><br>	<br>	GPIO_InitTypeDef GPIO_InitStructure;<br>	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;<br>	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;		<span class="hljs-comment">//GPIO_Pin_15;</span><br>	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;<br>	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);<br>	<br>	TIM_InternalClockConfig(TIM2);<br>	<br>	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">100</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//ARR</span><br>	TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">720</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//PSC</span><br>	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br>	TIM_TimeBaseInit(TIM2, &amp;TIM_TimeBaseInitStructure);<br>	<br>	TIM_OCInitTypeDef TIM_OCInitStructure;<br>	TIM_OCStructInit(&amp;TIM_OCInitStructure);<br>	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;<br>	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;<br>	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;<br>	TIM_OCInitStructure.TIM_Pulse = <span class="hljs-number">0</span>;		<span class="hljs-comment">//CCR</span><br>	TIM_OC1Init(TIM2, &amp;TIM_OCInitStructure);<br>	<br>	TIM_Cmd(TIM2, ENABLE);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">PWM_SetCompare1</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Compare)</span><br>&#123;<br>	TIM_SetCompare1(TIM2, Compare);<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
 <p>main.c</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Delay.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;OLED.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;PWM.h&quot;</span></span><br><br><span class="hljs-type">uint8_t</span> i;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	OLED_Init();<br>	PWM_Init();<br>	<br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">100</span>; i++)<br>		&#123;<br>			PWM_SetCompare1(i);<br>			Delay_ms(<span class="hljs-number">10</span>);<br>		&#125;<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">100</span>; i++)<br>		&#123;<br>			PWM_SetCompare1(<span class="hljs-number">100</span> - i);<br>			Delay_ms(<span class="hljs-number">10</span>);<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 

@@ -19,18 +19,18 @@
   <meta name="author" content="Wu Xuanye">
   <meta name="keywords" content="">
   
-    <meta name="description" content="STM32 定时器（TIM）学习笔记（三）Part 3. 输入捕获模式1. 简介输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。 输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。 所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。 (1213.png) PWMI模式">
+    <meta name="description" content="STM32 定时器（TIM）学习笔记（三） Part 3. 输入捕获模式 1. 简介 输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。 输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。 所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。 PWMI模式是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="stm32定时器学习笔记（三）">
 <meta property="og:url" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
 <meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
-<meta property="og:description" content="STM32 定时器（TIM）学习笔记（三）Part 3. 输入捕获模式1. 简介输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。 输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。 所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。 (1213.png) PWMI模式">
+<meta property="og:description" content="STM32 定时器（TIM）学习笔记（三） Part 3. 输入捕获模式 1. 简介 输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。 输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。 所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。 PWMI模式是">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317113931545.png">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317125413540.png">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317140347914.png">
 <meta property="article:published_time" content="2024-12-01T10:15:12.000Z">
-<meta property="article:modified_time" content="2024-12-01T10:18:51.386Z">
+<meta property="article:modified_time" content="2024-12-01T12:45:12.675Z">
 <meta property="article:author" content="Wu Xuanye">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317113931545.png">
@@ -279,68 +279,81 @@
             
               <div class="markdown-body">
                 
-                <h1 id="STM32-定时器（TIM）学习笔记（三）"><a href="#STM32-定时器（TIM）学习笔记（三）" class="headerlink" title="STM32 定时器（TIM）学习笔记（三）"></a>STM32 定时器（TIM）学习笔记（三）</h1><h2 id="Part-3-输入捕获模式"><a href="#Part-3-输入捕获模式" class="headerlink" title="Part 3. 输入捕获模式"></a>Part 3. 输入捕获模式</h2><h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。</p>
+                <h1 id="stm32-定时器tim学习笔记三">STM32
+定时器（TIM）学习笔记（三）</h1>
+<h2 id="part-3.-输入捕获模式">Part 3. 输入捕获模式</h2>
+<h2 id="简介">1. 简介</h2>
+<p>输出比较是将CNT的值与CCR进行比较以此作为输出的判断依据，而输入捕获则是将CNT的值存在CCR之中。</p>
 <p>输入捕获模式与输出比较模式是相对的，且他们共用四个CCR寄存器，同时CH1到CH4的引脚也是共用的。</p>
 <p>所以对于同一个定时器，要么选择输入捕获，要么选择输出比较，二者不可同时使用。</p>
-<p>(1213.png)</p>
 <p>PWMI模式是专门为测量PWM的频率与占空比设计的。</p>
-<h2 id="2-频率测量"><a href="#2-频率测量" class="headerlink" title="2. 频率测量"></a>2. 频率测量</h2><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317113931545.png" srcset="/img/loading.gif" lazyload alt="image-20240317113931545"></p>
+<h2 id="频率测量">2. 频率测量</h2>
+<figure>
+<img src="image-20240317113931545.png" srcset="/img/loading.gif" lazyload alt="image-20240317113931545" />
+<figcaption aria-hidden="true">image-20240317113931545</figcaption>
+</figure>
 <p>stm32只能测量方波，如果想要测量正弦波，还需要一个信号预处理电路</p>
-<h3 id="2-1-测频法"><a href="#2-1-测频法" class="headerlink" title="2.1 测频法"></a>2.1 测频法</h3><p>频率是一秒内来了多少个周期</p>
+<h3 id="测频法">2.1 测频法</h3>
+<p>频率是一秒内来了多少个周期</p>
 <p>所以我们可以在一个固定时间内数有多少个周期。</p>
 <p>而对于方波来说，只需要计数上升沿或者下降沿就可以。</p>
 <p>该方法要求信号频率低，且测出来的是平均值。</p>
-<h3 id="2-2-测周法"><a href="#2-2-测周法" class="headerlink" title="2.2 测周法"></a>2.2 测周法</h3><p>正如前文所说，两个上升沿之间的时间就是一个周期</p>
+<h3 id="测周法">2.2 测周法</h3>
+<p>正如前文所说，两个上升沿之间的时间就是一个周期</p>
 <p>那么我们只需要测量出两个上升沿之间的时间，再取一个倒数，就是频率</p>
-<p>想要实现这点，我们需要一个计时器，这个及时器就是标准频率  $ f_c$,我们测量两个上升沿之间这个计数器记了多少次数，那么$N&#x2F;f_c$就是周期，再对其取到数即可</p>
+<p>想要实现这点，我们需要一个计时器，这个及时器就是标准频率 <span
+class="math inline">\(f_c\)</span>,我们测量两个上升沿之间这个计数器记了多少次数，那么<span
+class="math inline">\(N/f_c\)</span>就是周期，再对其取到数即可</p>
 <p>该方法要求信号频率低，周期大，且测出来的是单次值。</p>
-<h2 id="2-3-中界频率"><a href="#2-3-中界频率" class="headerlink" title="2.3 中界频率"></a>2.3 中界频率</h2><p>当$N$相同时，我们有$f_x^2 &#x3D; \frac{N}{T}\frac{f_c}{N} &#x3D; \frac{f_c}{T}$</p>
+<h2 id="中界频率">2.3 中界频率</h2>
+<p>当<span class="math inline">\(N\)</span>相同时，我们有<span
+class="math display">\[f_x^2 = \frac{N}{T}\frac{f_c}{N} =
+\frac{f_c}{T}\]</span></p>
 <p>由此可得PPT上的公式。</p>
-<h2 id="3-输入捕获基本结构与主从触发模式"><a href="#3-输入捕获基本结构与主从触发模式" class="headerlink" title="3. 输入捕获基本结构与主从触发模式"></a>3. 输入捕获基本结构与主从触发模式</h2><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317125413540.png" srcset="/img/loading.gif" lazyload alt="image-20240317125413540"></p>
+<h2 id="输入捕获基本结构与主从触发模式">3.
+输入捕获基本结构与主从触发模式</h2>
+<figure>
+<img src="image-20240317125413540.png" srcset="/img/loading.gif" lazyload alt="image-20240317125413540" />
+<figcaption aria-hidden="true">image-20240317125413540</figcaption>
+</figure>
 <p>TIFP只有CH1和CH2拥有，3和4没有，如果想用3和4作为计数器，那么只能使用中断函数，这样对于STM32的负载就较高</p>
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/image-20240317140347914.png" srcset="/img/loading.gif" lazyload alt="image-20240317140347914"></p>
-<p>在STM32中，主从触发模式是一种定时器工作模式，通常用于多个定时器之间的同步操作。在主从触发模式下，存在一个主定时器（Master Timer）和一个或多个从定时器（Slave Timer）。主定时器负责产生一个触发信号，而从定时器则根据这个触发信号进行触发操作。</p>
+<figure>
+<img src="image-20240317140347914.png" srcset="/img/loading.gif" lazyload alt="image-20240317140347914" />
+<figcaption aria-hidden="true">image-20240317140347914</figcaption>
+</figure>
+<p>在STM32中，主从触发模式是一种定时器工作模式，通常用于多个定时器之间的同步操作。在主从触发模式下，存在一个主定时器（Master
+Timer）和一个或多个从定时器（Slave
+Timer）。主定时器负责产生一个触发信号，而从定时器则根据这个触发信号进行触发操作。</p>
 <p>让我用一个生动的例子来解释主从触发模式：</p>
 <p>假设你是一位指挥官，手下有一支士兵队伍。你想要确保所有的士兵同时进行某个任务，以保持队伍的整齐和效率。为了做到这一点，你使用了主从触发模式：</p>
 <ul>
-<li><strong>主定时器（Master Timer）</strong>：你作为指挥官，负责发出指令。你会向队伍发出一个统一的口令，例如“出发！”。这个口令就相当于主定时器产生的触发信号。</li>
-<li><strong>从定时器（Slave Timer）</strong>：队伍中的每个士兵都是一个从定时器，他们听到你的口令后，立即开始执行任务。他们的行动是根据你的口令进行触发的。</li>
+<li><strong>主定时器（Master
+Timer）</strong>：你作为指挥官，负责发出指令。你会向队伍发出一个统一的口令，例如“出发！”。这个口令就相当于主定时器产生的触发信号。</li>
+<li><strong>从定时器（Slave
+Timer）</strong>：队伍中的每个士兵都是一个从定时器，他们听到你的口令后，立即开始执行任务。他们的行动是根据你的口令进行触发的。</li>
 </ul>
 <p>在这个例子中，你就是主定时器，而士兵们则是从定时器。主定时器负责发出触发信号（口令），而从定时器则根据这个信号进行相应的动作（执行任务）。</p>
-<h2 id="4-代码实现"><a href="#4-代码实现" class="headerlink" title="4.代码实现"></a>4.代码实现</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_PrescalerConfig(TIM2, Prescaler, TIM_PSCReloadMode_Immediate)<br></code></pre></td></tr></table></figure>
-
+<h2 id="代码实现">4.代码实现</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_PrescalerConfig(TIM2, Prescaler, TIM_PSCReloadMode_Immediate)<br></code></pre></td></tr></table></figure>
 <p>这个函数可以配置某个定时器的PSC，同时可以通过配置Preload的模式来选择是立即生效还是一个周期之后生效。</p>
 <figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lisp">TIM_ICInit(<span class="hljs-name">TIM3</span>, <span class="hljs-symbol">&amp;TIM_ICInitStructure</span>)<span class="hljs-comment">;</span><br><br></code></pre></td></tr></table></figure>
-
 <p>这个函数可以选择定时器，并且配置这个定时器的结构体</p>
 <p>这里注意，GPIO选择上拉输入模式</p>
 <p>注意，CNT的值不能超过ARR的值，所以我们要尽可能大的配置ARR的值</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_ICInitTypeDef TIM_ICInitStructure;<br>	TIM_ICInitStructure.TIM_Channel = TIM_Channel_1;<br>	<span class="hljs-comment">//选择是哪一个通道</span><br>	TIM_ICInitStructure.TIM_ICFilter = <span class="hljs-number">0xF</span>;<br>	<span class="hljs-comment">//用来配置滤波器，这个数可以去参考手册找，对应了采样的频率与次数，根据实际需求选择</span><br>	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;<br><span class="hljs-comment">//选择是上升沿出发还是下降沿触发	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;</span><br><span class="hljs-comment">//选择每几次触发捕获事件</span><br>TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;<br><span class="hljs-comment">//选择是直连通道还是交联通道的输入</span><br>	TIM_ICInit(TIM3, &amp;TIM_ICInitStructure);<br></code></pre></td></tr></table></figure>
-
-
-
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">TIM_SelectInputTrigger</span>(TIM3, TIM_TS_TI1FP1);<br><span class="hljs-comment">// 配置触发源为TI1FP1</span><br>	<span class="hljs-built_in">TIM_SelectSlaveMode</span>(TIM3, TIM_SlaveMode_Reset);<br>	<span class="hljs-comment">//设置从模式为清零</span><br></code></pre></td></tr></table></figure>
-
-
-
-
-
 <p>如果我们还想测试占空比，那么可以用以下代码初始化：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs 1c">TIM_ICInitTypeDef TIM_ICInitStructure<span class="hljs-punctuation">;</span><br>	TIM_ICInitStructure.TIM_Channel <span class="hljs-punctuation">=</span> TIM_Channel_1<span class="hljs-punctuation">;</span><br>	TIM_ICInitStructure.TIM_ICFilter <span class="hljs-punctuation">=</span> <span class="hljs-number">0</span>xF<span class="hljs-punctuation">;</span><br>	TIM_ICInitStructure.TIM_ICPolarity <span class="hljs-punctuation">=</span> TIM_ICPolarity_Rising<span class="hljs-punctuation">;</span><br>	TIM_ICInitStructure.TIM_ICPrescaler <span class="hljs-punctuation">=</span> TIM_ICPSC_DIV1<span class="hljs-punctuation">;</span><br>	TIM_ICInitStructure.TIM_ICSelection <span class="hljs-punctuation">=</span> TIM_ICSelection_DirectTI<span class="hljs-punctuation">;</span><br>	TIM_PWMIConfig<span class="hljs-punctuation">(</span>TIM3<span class="hljs-punctuation">,</span> <span class="hljs-meta">&amp;TIM_ICInitStructure);</span><br></code></pre></td></tr></table></figure>
-
 <p>注意，这个函数只选择通道1或者通道2，当时通道3时，则应该会配置通道4</p>
-<h2 id="5-全代码"><a href="#5-全代码" class="headerlink" title="5.全代码"></a>5.全代码</h2><p>IC.c</p>
+<h2 id="全代码">5.全代码</h2>
+<p>IC.c</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">IC_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">RCC_APB1PeriphClockCmd</span>(RCC_APB1Periph_TIM3, ENABLE);<br>	<span class="hljs-built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOA, ENABLE);<br>	<br>	GPIO_InitTypeDef GPIO_InitStructure;<br>	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;<br>	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;<br>	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;<br>	<span class="hljs-built_in">GPIO_Init</span>(GPIOA, &amp;GPIO_InitStructure);<br>	<br>	<span class="hljs-built_in">TIM_InternalClockConfig</span>(TIM3);<br>	<br>	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">65536</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//ARR</span><br>	TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">72</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//PSC</span><br>	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br>	<span class="hljs-built_in">TIM_TimeBaseInit</span>(TIM3, &amp;TIM_TimeBaseInitStructure);<br>	<br>	TIM_ICInitTypeDef TIM_ICInitStructure;<br>	TIM_ICInitStructure.TIM_Channel = TIM_Channel_1;<br>	TIM_ICInitStructure.TIM_ICFilter = <span class="hljs-number">0xF</span>;<br>	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;<br>	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;<br>	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;<br>	<span class="hljs-built_in">TIM_ICInit</span>(TIM3, &amp;TIM_ICInitStructure);<br>	<br>	<span class="hljs-built_in">TIM_SelectInputTrigger</span>(TIM3, TIM_TS_TI1FP1);<br>	<span class="hljs-built_in">TIM_SelectSlaveMode</span>(TIM3, TIM_SlaveMode_Reset);<br>	<br>	<span class="hljs-built_in">TIM_Cmd</span>(TIM3, ENABLE);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">IC_GetFreq</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1000000</span> / (<span class="hljs-built_in">TIM_GetCapture1</span>(TIM3) + <span class="hljs-number">1</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
 <p>IC.h</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __IC_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> __IC_H</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">IC_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;<br><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">IC_GetFreq</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br><br></code></pre></td></tr></table></figure>
-
 <p>PWM.c</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">RCC_APB1PeriphClockCmd</span>(RCC_APB1Periph_TIM2, ENABLE);<br>	<span class="hljs-built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOA, ENABLE);<br>	<br><span class="hljs-comment">//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);</span><br><span class="hljs-comment">//	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);</span><br>	<br>	GPIO_InitTypeDef GPIO_InitStructure;<br>	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;<br>	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;		<span class="hljs-comment">//GPIO_Pin_15;</span><br>	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;<br>	<span class="hljs-built_in">GPIO_Init</span>(GPIOA, &amp;GPIO_InitStructure);<br>	<br>	<span class="hljs-built_in">TIM_InternalClockConfig</span>(TIM2);<br>	<br>	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">100</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//ARR</span><br>	TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">720</span> - <span class="hljs-number">1</span>;		<span class="hljs-comment">//PSC</span><br>	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br>	<span class="hljs-built_in">TIM_TimeBaseInit</span>(TIM2, &amp;TIM_TimeBaseInitStructure);<br>	<br>	TIM_OCInitTypeDef TIM_OCInitStructure;<br>	<span class="hljs-built_in">TIM_OCStructInit</span>(&amp;TIM_OCInitStructure);<br>	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;<br>	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;<br>	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;<br>	TIM_OCInitStructure.TIM_Pulse = <span class="hljs-number">0</span>;		<span class="hljs-comment">//CCR</span><br>	<span class="hljs-built_in">TIM_OC1Init</span>(TIM2, &amp;TIM_OCInitStructure);<br>	<br>	<span class="hljs-built_in">TIM_Cmd</span>(TIM2, ENABLE);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_SetCompare1</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Compare)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">TIM_SetCompare1</span>(TIM2, Compare);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PWM_SetPrescaler</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> Prescaler)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">TIM_PrescalerConfig</span>(TIM2, Prescaler, TIM_PSCReloadMode_Immediate);<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>main.c</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs \">#include &quot;stm32f10x.h&quot;                  // Device header<br>#include &quot;Delay.h&quot;<br>#include &quot;OLED.h&quot;<br>#include &quot;PWM.h&quot;<br>#include &quot;IC.h&quot;<br><br>int main(void)<br>&#123;<br>	OLED_Init();<br>	PWM_Init();<br>	IC_Init();<br>	<br>	OLED_ShowString(1, 1, &quot;Freq:00000Hz&quot;);<br>	<br>	PWM_SetPrescaler(720 - 1);			//Freq = 72M / (PSC + 1) / 100<br>	PWM_SetCompare1(50);				//Duty = CCR / 100<br>	<br>	while (1)<br>	&#123;<br>		OLED_ShowNum(1, 6, IC_GetFreq(), 5);<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
 
                 
               </div>
@@ -486,6 +499,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -678,6 +697,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

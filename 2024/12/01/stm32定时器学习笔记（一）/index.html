@@ -19,12 +19,12 @@
   <meta name="author" content="Wu Xuanye">
   <meta name="keywords" content="">
   
-    <meta name="description" content="stm32定时器（TIM)学习笔记定时器本质上就是一个计数器： 现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。 例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。  在这个游戏中，小明就是输入的时钟，小红就是计数器。 Part.1 TIM定时中断1.时基单元  计数器CNT :当有时钟源输入时，边开始计数。">
+    <meta name="description" content="stm32定时器（TIM)学习笔记 定时器本质上就是一个计数器： 现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。 例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。   image-20240315125519932  在这个游戏中，小明就是输入的时钟，小红就是计数器。 Part.1 TI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="stm32定时器学习笔记（一）">
 <meta property="og:url" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
 <meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
-<meta property="og:description" content="stm32定时器（TIM)学习笔记定时器本质上就是一个计数器： 现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。 例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。  在这个游戏中，小明就是输入的时钟，小红就是计数器。 Part.1 TIM定时中断1.时基单元  计数器CNT :当有时钟源输入时，边开始计数。">
+<meta property="og:description" content="stm32定时器（TIM)学习笔记 定时器本质上就是一个计数器： 现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。 例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。   image-20240315125519932  在这个游戏中，小明就是输入的时钟，小红就是计数器。 Part.1 TI">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315125519932.png">
 <meta property="og:image" content="http://example.com/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315130139425.png">
@@ -244,7 +244,7 @@
         
         
         
-          9 mins
+          10 mins
         
       </span>
     
@@ -286,78 +286,101 @@
             
               <div class="markdown-body">
                 
-                <h1 id="stm32定时器（TIM-学习笔记"><a href="#stm32定时器（TIM-学习笔记" class="headerlink" title="stm32定时器（TIM)学习笔记"></a>stm32定时器（TIM)学习笔记</h1><p>定时器本质上就是一个计数器：</p>
+                <h1 id="stm32定时器tim学习笔记">stm32定时器（TIM)学习笔记</h1>
+<p>定时器本质上就是一个计数器：</p>
 <p>现在小明与小红在一起玩游戏，小明每隔一秒从1数到100，小明在每数两个数之后小红会数一次，但是小红数到5之后又会从零开始数。</p>
 <p>例如，小明数从1数到12后，小红会从1数到5之后归零从1开始数。</p>
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315125519932.png" srcset="/img/loading.gif" lazyload alt="image-20240315125519932"></p>
+<figure>
+<img src="image-20240315125519932.png" srcset="/img/loading.gif" lazyload alt="image-20240315125519932" />
+<figcaption aria-hidden="true">image-20240315125519932</figcaption>
+</figure>
 <p>在这个游戏中，小明就是输入的时钟，小红就是计数器。</p>
-<h2 id="Part-1-TIM定时中断"><a href="#Part-1-TIM定时中断" class="headerlink" title="Part.1 TIM定时中断"></a>Part.1 TIM定时中断</h2><h3 id="1-时基单元"><a href="#1-时基单元" class="headerlink" title="1.时基单元"></a>1.时基单元</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315130139425.png" srcset="/img/loading.gif" lazyload alt="image-20240315130139425"></p>
+<h2 id="part.1-tim定时中断">Part.1 TIM定时中断</h2>
+<h3 id="时基单元">1.时基单元</h3>
+<figure>
+<img src="image-20240315130139425.png" srcset="/img/loading.gif" lazyload alt="image-20240315130139425" />
+<figcaption aria-hidden="true">image-20240315130139425</figcaption>
+</figure>
 <ul>
 <li><strong>计数器CNT</strong> :当有时钟源输入时，边开始计数。</li>
-<li><strong>预分频器PSC</strong> ：对于输入的时钟源，选择是每隔几个数计一次数。</li>
-<li><strong>自动重装寄存器ARR</strong>： 当计数器计到最大值时，清零计数器。</li>
+<li><strong>预分频器PSC</strong>
+：对于输入的时钟源，选择是每隔几个数计一次数。</li>
+<li><strong>自动重装寄存器ARR</strong>：
+当计数器计到最大值时，清零计数器。</li>
 </ul>
-<h3 id="2-定时器类型"><a href="#2-定时器类型" class="headerlink" title="2.定时器类型"></a>2.定时器类型</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315125853606.png" srcset="/img/loading.gif" lazyload alt="image-20240315125853606"></p>
+<h3 id="定时器类型">2.定时器类型</h3>
+<figure>
+<img src="image-20240315125853606.png" srcset="/img/loading.gif" lazyload alt="image-20240315125853606" />
+<figcaption aria-hidden="true">image-20240315125853606</figcaption>
+</figure>
 <p>stm32F103C8T6仅仅有TIM 1~4。</p>
-<h3 id="3-计数模式"><a href="#3-计数模式" class="headerlink" title="3.计数模式"></a>3.计数模式</h3><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240315131747682.png" srcset="/img/loading.gif" lazyload alt="image-20240315131747682"></p>
+<h3 id="计数模式">3.计数模式</h3>
+<figure>
+<img src="image-20240315131747682.png" srcset="/img/loading.gif" lazyload alt="image-20240315131747682" />
+<figcaption aria-hidden="true">image-20240315131747682</figcaption>
+</figure>
 <p>对于基本计时器，仅仅只有向上计数这一种计数模式。</p>
 <p>而通用定时器与高级定时器有向上计数、向下计数、中央对齐的计数模式。</p>
-<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316115753789.png" srcset="/img/loading.gif" lazyload alt="image-20240316115753789"></p>
-<h2 id="5-代码实现"><a href="#5-代码实现" class="headerlink" title="5.代码实现"></a>5.代码实现</h2><h3 id="5-1-TimerInit"><a href="#5-1-TimerInit" class="headerlink" title="5.1 TimerInit"></a>5.1 TimerInit</h3><p>Step 1. 因为Tim2在APB1上，所以开启APB1的外设时钟：</p>
+<h2 id="section">4.</h2>
+<figure>
+<img src="image-20240316115753789.png" srcset="/img/loading.gif" lazyload alt="image-20240316115753789" />
+<figcaption aria-hidden="true">image-20240316115753789</figcaption>
+</figure>
+<h2 id="代码实现">5.代码实现</h2>
+<h3 id="timerinit">5.1 TimerInit</h3>
+<p>Step 1. 因为Tim2在APB1上，所以开启APB1的外设时钟：</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">RCC_APB1PeriphClockCmd</span>(RCC_APB1Periph_Tim2,ENABLE);<br></code></pre></td></tr></table></figure>
-
 <p>Step 2.选择输入的时钟源，这里有这么几个函数可供选择：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">TIM_InternalClockConfig</span><span class="hljs-params">(TIM_TypeDef* TIMx)</span>;<br><span class="hljs-comment">//选择内部时钟源</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316121607585.png" srcset="/img/loading.gif" lazyload alt="image-20240316121607585"></p>
+<figure>
+<img src="image-20240316121607585.png" srcset="/img/loading.gif" lazyload alt="image-20240316121607585" />
+<figcaption aria-hidden="true">image-20240316121607585</figcaption>
+</figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> TIM <span class="hljs-title function_">ITRxExternalclockCoffig</span><span class="hljs-params">(TIM_TypeDef* TIMx, <span class="hljs-type">uint16_t</span> TIM_InputTriggerSource)</span>;<br><span class="hljs-comment">//选择其他定时器作为时钟源</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316121835611.png" srcset="/img/loading.gif" lazyload alt="image-20240316121835611"></p>
+<figure>
+<img src="image-20240316121835611.png" srcset="/img/loading.gif" lazyload alt="image-20240316121835611" />
+<figcaption aria-hidden="true">image-20240316121835611</figcaption>
+</figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">TIM_TIxExternalclockConfig</span><span class="hljs-params">(TIM TypeDef* TIMx, <span class="hljs-type">uint16_t</span> TIM TIxExternalCLKSource</span><br><span class="hljs-params"><span class="hljs-type">uint16_t</span> TIM ICPolarity, uint16 t ICFilter)</span>;<br><br><span class="hljs-comment">//TIM TIxExternalCLKSource选择具体的某个引脚</span><br><span class="hljs-comment">//uint16_t TIM ICPolarity, uint16 t ICFilter极性与滤波器</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316122142003.png" srcset="/img/loading.gif" lazyload alt="image-20240316122142003"></p>
+<figure>
+<img src="image-20240316122142003.png" srcset="/img/loading.gif" lazyload alt="image-20240316122142003" />
+<figcaption aria-hidden="true">image-20240316122142003</figcaption>
+</figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> TIM <span class="hljs-title function_">ETRClockModelConfig</span><span class="hljs-params">(TIM TypeDef* TIMx, uint16 t TIM ExtTRGPrescaler, uint16 t TIM E</span><br><span class="hljs-params">uint16 t ExtTRGFilter)</span>;<br><span class="hljs-comment">//ExtTRGPrescaler再做一次分频率</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316122220445.png" srcset="/img/loading.gif" lazyload alt="image-20240316122220445"></p>
+<figure>
+<img src="image-20240316122220445.png" srcset="/img/loading.gif" lazyload alt="image-20240316122220445" />
+<figcaption aria-hidden="true">image-20240316122220445</figcaption>
+</figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> TIM <span class="hljs-title function_">ETRClockMode2Config</span><span class="hljs-params">(TIM TypeDef* TIMx， uint16 t TIM ExtTRGPrescaler,</span><br><span class="hljs-params">uint16 t TIM ExtTRGPolarity, uint16 t ExtTRGFilter)</span>;<br><span class="hljs-comment">//和CLOCK1一样，可以互换</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="/2024/12/01/stm32%E5%AE%9A%E6%97%B6%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/image-20240316122306004.png" srcset="/img/loading.gif" lazyload alt="image-20240316122306004"></p>
+<figure>
+<img src="image-20240316122306004.png" srcset="/img/loading.gif" lazyload alt="image-20240316122306004" />
+<figcaption aria-hidden="true">image-20240316122306004</figcaption>
+</figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> TIM <span class="hljs-title function_">ETRConfig</span><span class="hljs-params">(TIM TypeDef* TIMx, uint16 t TIM ExtTRGPrescaler, uint16 t TIM ExtTRGPolar</span><br><span class="hljs-params">uint16 t ExtTRGFilter)</span>;<br><span class="hljs-comment">//单独配置Prescaler之类的东西</span><br></code></pre></td></tr></table></figure>
-
-
-
 <p>由于我们这里选择使用内部时钟，所以直接输入如下代码即可</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_InternalClockConfig(TIM2);<br></code></pre></td></tr></table></figure>
-
 <p>Step 3.时基单元的配置</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br><span class="hljs-comment">//定义初始化结构体</span><br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br><span class="hljs-comment">// 时钟分分频，可以滤除波动的干扰，可以取值1,2,4</span><br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br><span class="hljs-comment">// 配置计数器的模式。有Up,Down,CenterAligned3种。这选择向上计数</span><br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">10000</span> - <span class="hljs-number">1</span>;<br><span class="hljs-comment">//周期的配置</span><br><br>TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">7200</span> - <span class="hljs-number">1</span>;<br><span class="hljs-comment">// 预分频的配置</span><br><br><span class="hljs-comment">/* </span><br><span class="hljs-comment">假使我们要有一个一秒定时器，那么要怎么配置呢？</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">这里可以使用如下公式：</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">多少秒计数一次 =  时钟源/（预分频+1）（自动重装值+1）</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">这里设置为1秒一次，那么 1 = 72*10^6/10000/7200</span><br><span class="hljs-comment">*/</span><br>TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br><span class="hljs-comment">//高级计数器重复计数功能，实现多个周期后才进行一次中断的操作</span><br>	TIM_TimeBaseInit(TIM2, &amp;TIM_TimeBaseInitStructure);<br></code></pre></td></tr></table></figure>
-
-<h3 id="5-2-TIM-ITconfig"><a href="#5-2-TIM-ITconfig" class="headerlink" title="5.2 TIM_ITconfig"></a>5.2 TIM_ITconfig</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);<br></code></pre></td></tr></table></figure>
-
+<h3 id="tim_itconfig">5.2 TIM_ITconfig</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);<br></code></pre></td></tr></table></figure>
 <p>使用该命令可以开启定时器中断</p>
-<h3 id="5-3-NVIC的配置"><a href="#5-3-NVIC的配置" class="headerlink" title="5.3 NVIC的配置"></a>5.3 NVIC的配置</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);<br><span class="hljs-comment">//选择分组2,这里不懂的可以等过几天作者写出来关于中断的笔记，不过感觉大家伙应该都不是很能从作者这里收获到知识，这样吧，点赞破50就更新NVIC</span><br>	<br>	NVIC_InitTypeDef NVIC_InitStructure;<br><span class="hljs-comment">//定义NVIC结构体</span><br>	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn; <span class="hljs-comment">//选择中断是哪一个中断</span><br>	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; <span class="hljs-comment">//打开中断</span><br>	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = <span class="hljs-number">2</span>;<span class="hljs-comment">//配置抢占优先级</span><br>	NVIC_InitStructure.NVIC_IRQChannelSubPriority = <span class="hljs-number">1</span>;<span class="hljs-comment">//配置子优先级</span><br>	NVIC_Init(&amp;NVIC_InitStructure);<br><span class="hljs-comment">//定义结构体</span><br>	<br></code></pre></td></tr></table></figure>
-
-<h3 id="5-4-TIM-Cmd"><a href="#5-4-TIM-Cmd" class="headerlink" title="5.4 	TIM_Cmd"></a>5.4 	TIM_Cmd</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_Cmd(TIM2, ENABLE);<br></code></pre></td></tr></table></figure>
-
+<h3 id="nvic的配置">5.3 NVIC的配置</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);<br><span class="hljs-comment">//选择分组2,这里不懂的可以等过几天作者写出来关于中断的笔记，不过感觉大家伙应该都不是很能从作者这里收获到知识，这样吧，点赞破50就更新NVIC</span><br>	<br>	NVIC_InitTypeDef NVIC_InitStructure;<br><span class="hljs-comment">//定义NVIC结构体</span><br>	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn; <span class="hljs-comment">//选择中断是哪一个中断</span><br>	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; <span class="hljs-comment">//打开中断</span><br>	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = <span class="hljs-number">2</span>;<span class="hljs-comment">//配置抢占优先级</span><br>	NVIC_InitStructure.NVIC_IRQChannelSubPriority = <span class="hljs-number">1</span>;<span class="hljs-comment">//配置子优先级</span><br>	NVIC_Init(&amp;NVIC_InitStructure);<br><span class="hljs-comment">//定义结构体</span><br>	<br></code></pre></td></tr></table></figure>
+<h3 id="tim_cmd">5.4 TIM_Cmd</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">TIM_Cmd(TIM2, ENABLE);<br></code></pre></td></tr></table></figure>
 <p>打开TIM</p>
-<h3 id="5-5-配置中断函数"><a href="#5-5-配置中断函数" class="headerlink" title="5.5 配置中断函数"></a>5.5 配置中断函数</h3><p>每个中断函数都不能由自己定义，都是由stm32自己定义的。如果想要编写中断函数，我们需要做的是查询到这个函数的名称，然后继续写入这个函数。</p>
+<h3 id="配置中断函数">5.5 配置中断函数</h3>
+<p>每个中断函数都不能由自己定义，都是由stm32自己定义的。如果想要编写中断函数，我们需要做的是查询到这个函数的名称，然后继续写入这个函数。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">TIM2_IRQHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (TIM_GetITStatus(TIM2, TIM_IT_Update) == SET)<br>	&#123;TIM_ClearITPendingBit(TIM2, TIM_IT_Update);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-
-
-
-
 <p>全代码：</p>
 <p>Timer.c文件：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Timer_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);<br>	<br>	TIM_InternalClockConfig(TIM2);<br>	<br>	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;<br>	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;<br>	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;<br>	TIM_TimeBaseInitStructure.TIM_Period = <span class="hljs-number">10000</span> - <span class="hljs-number">1</span>;<br>	TIM_TimeBaseInitStructure.TIM_Prescaler = <span class="hljs-number">7200</span> - <span class="hljs-number">1</span>;<br>	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = <span class="hljs-number">0</span>;<br>	TIM_TimeBaseInit(TIM2, &amp;TIM_TimeBaseInitStructure);<br>	<br>	TIM_ClearFlag(TIM2, TIM_FLAG_Update);<br>	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);<br>	<br>	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);<br>	<br>	NVIC_InitTypeDef NVIC_InitStructure;<br>	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;<br>	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;<br>	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = <span class="hljs-number">2</span>;<br>	NVIC_InitStructure.NVIC_IRQChannelSubPriority = <span class="hljs-number">1</span>;<br>	NVIC_Init(&amp;NVIC_InitStructure);<br>	<br>	TIM_Cmd(TIM2, ENABLE);<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>Tim.h文件</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __TIMER_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> __TIMER_H</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Timer_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br></code></pre></td></tr></table></figure>
-
 <p>main.c文件</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stm32f10x.h&quot;</span>                  <span class="hljs-comment">// Device header</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Delay.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;OLED.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Timer.h&quot;</span></span><br><br><span class="hljs-type">uint16_t</span> Num;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	OLED_Init();<br>	Timer_Init();<br>	<br>	OLED_ShowString(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-string">&quot;Num:&quot;</span>);<br>	<br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		OLED_ShowNum(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, Num, <span class="hljs-number">5</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">TIM2_IRQHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (TIM_GetITStatus(TIM2, TIM_IT_Update) == SET)<br>	&#123;<br>		Num ++;<br>		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
-<p>这里需要注意，我们所引用的Num变量在两个文件中出现过，这种情况要么是在另外一个文件中加上extern int num,要么是把中断函数移动到main.c中。</p>
+<p>这里需要注意，我们所引用的Num变量在两个文件中出现过，这种情况要么是在另外一个文件中加上extern
+int num,要么是把中断函数移动到main.c中。</p>
 <p>此外，在初始化TIM后，程序会立即启动TIM的中断一次，为了防止这一现象，应该加上clearflag这句话。</p>
 
                 

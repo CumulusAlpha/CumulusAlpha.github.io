@@ -19,12 +19,12 @@
   <meta name="author" content="Wu Xuanye">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ROS常用APIros::init()ros::init( argc, argv, &quot;name of node&quot;,option)该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；  argv： 该参数是向其中传入的参数的数组，即假设我们向其中传入了">
+    <meta name="description" content="ROS常用API ros::init() ros::init( argc, argv, &quot;name of node&quot;,option) 该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11； argv： 该参数是向其中传入的参数的数组，即假设我们向其中传">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROS中常用API">
 <meta property="og:url" content="http://example.com/2024/12/01/ROS%E4%B8%AD%E5%B8%B8%E7%94%A8API/index.html">
 <meta property="og:site_name" content="Cumulus&#x2F;Wu Xuanye">
-<meta property="og:description" content="ROS常用APIros::init()ros::init( argc, argv, &quot;name of node&quot;,option)该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；  argv： 该参数是向其中传入的参数的数组，即假设我们向其中传入了">
+<meta property="og:description" content="ROS常用API ros::init() ros::init( argc, argv, &quot;name of node&quot;,option) 该函数有四个参数， argc, argv, name,option 其中，各参数有以下作用：  argc： 向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11； argv： 该参数是向其中传入的参数的数组，即假设我们向其中传">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-12-01T10:00:35.000Z">
 <meta property="article:modified_time" content="2024-12-01T10:01:02.208Z">
@@ -275,119 +275,115 @@
             
               <div class="markdown-body">
                 
-                <h1 id="ROS常用API"><a href="#ROS常用API" class="headerlink" title="ROS常用API"></a>ROS常用API</h1><h2 id="ros-init"><a href="#ros-init" class="headerlink" title="ros::init()"></a>ros::init()</h2><h3 id="ros-init-argc-argv-name-of-node-option"><a href="#ros-init-argc-argv-name-of-node-option" class="headerlink" title="ros::init( argc, argv, &quot;name of node&quot;,option)"></a><code>ros::init( argc, argv, &quot;name of node&quot;,option)</code></h3><p>该函数有四个参数， argc, argv, name,option</p>
+                <h1 id="ros常用api">ROS常用API</h1>
+<h2 id="rosinit">ros::init()</h2>
+<h3
+id="rosinit-argc-argv-name-of-nodeoption"><code>ros::init( argc, argv, "name of node",option)</code></h3>
+<p>该函数有四个参数， argc, argv, name,option</p>
 <p>其中，各参数有以下作用：</p>
-<ol>
+<ol type="1">
 <li><p>argc：</p>
-<p>向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是 11；</p>
-</li>
+<p>向该函数传入的实参数量 +1，即如果向内传入10个参数，那么该值是
+11；</p></li>
 <li><p>argv：</p>
-<p>该参数是向其中传入的参数的数组，即假设我们向其中传入了0~9共10 个数，那么这个数组将会是：<br>$$<br>0 \ 1 \ 2 \ 3 \ 4 <br>  5 \ 6 \ 7 \ 8 \ 9<br>$$</p>
-</li>
+<p>该参数是向其中传入的参数的数组，即假设我们向其中传入了0~9共10
+个数，那么这个数组将会是： <span class="math display">\[
+0 \ 1 \ 2 \ 3 \ 4 \
+  5 \ 6 \ 7 \ 8 \ 9
+\]</span></p></li>
 <li><p>name of node:</p>
-<p>该节点的名称，通常情况下节点名称具有唯一性，即每个节点的名字要不同</p>
-</li>
+<p>该节点的名称，通常情况下节点名称具有唯一性，即每个节点的名字要不同</p></li>
 <li><p>option:</p>
-<p>有些时候，我们会反复开启一个节点。此时为了保持节点唯一性，就需要使用option下面的ros::init_options::AnonymousName，该值为封装好的值，直接替换option所在位置即可</p>
-</li>
-<li><p>为了向其中传入数据，我们可以用特定格式，如 _length :&#x3D; 2</p>
-<p>这会为参数服务器插入一个值为2的length</p>
-</li>
-<li><p>无返回值</p>
-</li>
+<p>有些时候，我们会反复开启一个节点。此时为了保持节点唯一性，就需要使用option下面的ros::init_options::AnonymousName，该值为封装好的值，直接替换option所在位置即可</p></li>
+<li><p>为了向其中传入数据，我们可以用特定格式，如 _length := 2</p>
+<p>这会为参数服务器插入一个值为2的length</p></li>
+<li><p>无返回值</p></li>
 </ol>
-<h2 id="ros-Publisher"><a href="#ros-Publisher" class="headerlink" title="ros::Publisher"></a>ros::Publisher</h2><p><code> ros::Publisher pub = nh.advertise &lt; std_msgs::String &gt;(&quot;name of topic&quot;,frequency,latch)</code></p>
-<p>​		创建一个发布者对象。其中，各参数的意义如下：</p>
-<ol>
+<h2 id="rospublisher">ros::Publisher</h2>
+<p><code>ros::Publisher pub = nh.advertise &lt; std_msgs::String &gt;("name of topic",frequency,latch)</code></p>
+<p>​ 创建一个发布者对象。其中，各参数的意义如下：</p>
+<ol type="1">
 <li>name of node</li>
 </ol>
-<p>​		该参数用于指定发布者对象的发布话题是什么，可以自定义但要记得节点名称具有唯一性</p>
-<ol start="2">
+<p>​
+该参数用于指定发布者对象的发布话题是什么，可以自定义但要记得节点名称具有唯一性</p>
+<ol start="2" type="1">
 <li>nh.advertise&lt;&gt;</li>
 </ol>
-<p>​		用于指定是发布对象，假使要为接受方，则为subscribe&lt;&gt;。</p>
-<p>​		尖括号内事消息的格式，后面还有geometry_msg类型，可以自我定义 </p>
-<ol start="2">
+<p>​ 用于指定是发布对象，假使要为接受方，则为subscribe&lt;&gt;。</p>
+<p>​ 尖括号内事消息的格式，后面还有geometry_msg类型，可以自我定义</p>
+<ol start="2" type="1">
 <li><p>frequency</p>
-<p>用于指定发布的评论，单位为Hz。比如我们这里填写10，那么就是一秒钟发布10个消息</p>
-</li>
+<p>用于指定发布的评论，单位为Hz。比如我们这里填写10，那么就是一秒钟发布10个消息</p></li>
 <li><p>latch</p>
 <p>optional的选项，即可以写也可以不写使用默认值，是一个额外的对象。</p>
-<p>该值如果为true，那么发布方就会将最后发布的消息储存，当有新的订阅者连接到它时，就会再将这个信息发布出去</p>
-</li>
-<li><p>pub.publish是其返回值</p>
-</li>
+<p>该值如果为true，那么发布方就会将最后发布的消息储存，当有新的订阅者连接到它时，就会再将这个信息发布出去</p></li>
+<li><p>pub.publish是其返回值</p></li>
 </ol>
-<h2 id="ros-Subscriber"><a href="#ros-Subscriber" class="headerlink" title="ros::Subscriber"></a>ros::Subscriber</h2><p><code>ros::Subscriber sub = nh.subscribe(&quot;topic_name&quot;, queue_size, callback_function)</code></p>
+<h2 id="rossubscriber">ros::Subscriber</h2>
+<p><code>ros::Subscriber sub = nh.subscribe("topic_name", queue_size, callback_function)</code></p>
 <p>创建一个订阅者对象</p>
-<ol>
+<ol type="1">
 <li><p>“topic_name”</p>
-<p>话题名称，不再过多介绍</p>
-</li>
+<p>话题名称，不再过多介绍</p></li>
 <li><p>queue_size</p>
-<p>队列长度，当接受到的消息数量大于队列长度时，队列会将最开始收到的信息出队，这里用到的知识是队列的FIFO（First in first out）知识</p>
-</li>
+<p>队列长度，当接受到的消息数量大于队列长度时，队列会将最开始收到的信息出队，这里用到的知识是队列的FIFO（First
+in first out）知识</p></li>
 <li><p>call_backfunction</p>
-<p>回调函数，在接受到消息时，配合spin&#x2F;spinonce函数可以达到不断调用该函数的功能。</p>
+<p>回调函数，在接受到消息时，配合spin/spinonce函数可以达到不断调用该函数的功能。</p>
 <p>例如，我想在接受到一个函数信息时，就发布“我接受到的消息是：+xxx”，那么代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ros/ros.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;std_msgs/String.h&quot;</span></span><br><br><span class="hljs-comment">// 回调函数定义</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">chatterCallback</span><span class="hljs-params">(<span class="hljs-type">const</span> std_msgs::String::ConstPtr&amp; msg)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;I heard: [%s]&quot;</span>, msg-&gt;data.<span class="hljs-built_in">c_str</span>());<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// 初始化ROS节点</span><br>  ros::<span class="hljs-built_in">init</span>(argc, argv, <span class="hljs-string">&quot;listener&quot;</span>);<br><br>  <span class="hljs-comment">// 创建节点句柄</span><br>  ros::NodeHandle n;<br><br>  <span class="hljs-comment">// 订阅消息，并注册回调函数</span><br>  ros::Subscriber sub = n.<span class="hljs-built_in">subscribe</span>(<span class="hljs-string">&quot;chatter&quot;</span>, <span class="hljs-number">1000</span>, chatterCallback);<br><br>  <span class="hljs-comment">// 循环等待消息</span><br>  ros::<span class="hljs-built_in">spin</span>();<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="spin-spinOnce"><a href="#spin-spinOnce" class="headerlink" title="spin&#x2F;spinOnce"></a>spin&#x2F;spinOnce</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">spin</span>();<br>ros::<span class="hljs-built_in">spinOnce</span>();<br></code></pre></td></tr></table></figure>
-
+<h2 id="spinspinonce">spin/spinOnce</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">spin</span>();<br>ros::<span class="hljs-built_in">spinOnce</span>();<br></code></pre></td></tr></table></figure>
 <ul>
-<li><h3 id="ros-spin"><a href="#ros-spin" class="headerlink" title="ros::spin();"></a>ros::spin();</h3><p>会一直前面的回调函数位置，其后的内容无法执行</p>
-</li>
-<li><h3 id="ros-spinOnce"><a href="#ros-spinOnce" class="headerlink" title="ros::spinOnce();"></a>ros::spinOnce();</h3><p>仅仅回调一次，其后的内容在回调一次后又会执行</p>
-</li>
+<li><h3 id="rosspin">ros::spin();</h3>
+<p>会一直前面的回调函数位置，其后的内容无法执行</p></li>
+<li><h3 id="rosspinonce">ros::spinOnce();</h3>
+<p>仅仅回调一次，其后的内容在回调一次后又会执行</p></li>
 </ul>
-<h2 id="ros-Time-now"><a href="#ros-Time-now" class="headerlink" title="ros:Time::now()"></a>ros:Time::now()</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">init</span>(argc,argv,<span class="hljs-string">&quot;hello_time&quot;</span>);<br>ros::NodeHandle nh;<br>ros::Time right_now = ros::Time::<span class="hljs-built_in">now</span>();<span class="hljs-comment">//将当前时刻封装成对象</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%.2f&quot;</span>,right_now.<span class="hljs-built_in">toSec</span>());<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%d&quot;</span>,right_now.sec);<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime</span><span class="hljs-params">(<span class="hljs-number">100</span>,<span class="hljs-number">100000000</span>)</span></span>;<span class="hljs-comment">// 参数1:秒数  参数2:纳秒</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime.<span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.10</span><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime2</span><span class="hljs-params">(<span class="hljs-number">100.3</span>)</span></span>;<br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime<span class="hljs-number">2.</span><span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.30</span><br><br></code></pre></td></tr></table></figure>
-
+<h2 id="rostimenow">ros:Time::now()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::<span class="hljs-built_in">init</span>(argc,argv,<span class="hljs-string">&quot;hello_time&quot;</span>);<br>ros::NodeHandle nh;<br>ros::Time right_now = ros::Time::<span class="hljs-built_in">now</span>();<span class="hljs-comment">//将当前时刻封装成对象</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%.2f&quot;</span>,right_now.<span class="hljs-built_in">toSec</span>());<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;当前时刻:%d&quot;</span>,right_now.sec);<span class="hljs-comment">//获取距离 1970年01月01日 00:00:00 的秒数</span><br><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime</span><span class="hljs-params">(<span class="hljs-number">100</span>,<span class="hljs-number">100000000</span>)</span></span>;<span class="hljs-comment">// 参数1:秒数  参数2:纳秒</span><br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime.<span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.10</span><br><span class="hljs-function">ros::Time <span class="hljs-title">someTime2</span><span class="hljs-params">(<span class="hljs-number">100.3</span>)</span></span>;<br><span class="hljs-built_in">ROS_INFO</span>(<span class="hljs-string">&quot;时刻:%.2f&quot;</span>,someTime<span class="hljs-number">2.</span><span class="hljs-built_in">toSec</span>()); <span class="hljs-comment">//100.30</span><br><br></code></pre></td></tr></table></figure>
 <p>该函数可以返回当程序调用它时举例1970年1月1日8点的时间戳</p>
 <p>1.在使用该函数时，必须使用Nodehandle进行初始化，否则时间没有初始化该函数无法调用</p>
-<ol start="2">
+<ol start="2" type="1">
 <li></li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">right_now.<span class="hljs-built_in">toSec</span>()<br></code></pre></td></tr></table></figure>
-
 <p>可以将right_now的值转换为秒数</p>
-<ol start="3">
+<ol start="3" type="1">
 <li></li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Time <span class="hljs-title">someTime</span><span class="hljs-params">(<span class="hljs-number">100</span>,<span class="hljs-number">100000000</span>)</span></span>;<br></code></pre></td></tr></table></figure>
-
 <p>设置一个sometime的值为100秒+1000000纳秒，也可以这样设置：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Time <span class="hljs-title">someTime2</span><span class="hljs-params">(<span class="hljs-number">100.3</span>)</span></span>;<br></code></pre></td></tr></table></figure>
-
-<ol start="4">
+<ol start="4" type="1">
 <li><p>ros::time相减可以，相加不可以。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Time begin = ros::Time::<span class="hljs-built_in">now</span>();<br><span class="hljs-function">ros::Duration <span class="hljs-title">dul</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span></span>;<br>ros::Time end = begin + dul;<br><br>ros::Duration du2 = end - begin; <br><br></code></pre></td></tr></table></figure>
-</li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Time begin = ros::Time::<span class="hljs-built_in">now</span>();<br><span class="hljs-function">ros::Duration <span class="hljs-title">dul</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span></span>;<br>ros::Time end = begin + dul;<br><br>ros::Duration du2 = end - begin; <br><br></code></pre></td></tr></table></figure></li>
 <li><p>duration之间可以任意相加</p>
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino">ros::Duration du3 = du2 - dul;<br>ros::Duration du4 = du2 + dul;<br><br></code></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="ros-Rate"><a href="#ros-Rate" class="headerlink" title="ros::Rate"></a>ros::Rate</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs scss">ros::Rate <span class="hljs-built_in">rate_20hz</span>(<span class="hljs-number">20</span>); <span class="hljs-comment">// 创建一个20Hz的频率对象</span><br>while (true)<br>&#123;<br>    messenger<span class="hljs-selector-class">.PublishStateToROS</span>();<br>    ros::<span class="hljs-built_in">spinOnce</span>();<br>    rate_20hz<span class="hljs-selector-class">.sleep</span>();<br>&#125;<br>   <br></code></pre></td></tr></table></figure></li>
+<h2 id="rosrate">ros::Rate</h2>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs scss">ros::Rate <span class="hljs-built_in">rate_20hz</span>(<span class="hljs-number">20</span>); <span class="hljs-comment">// 创建一个20Hz的频率对象</span><br>while (true)<br>&#123;<br>    messenger<span class="hljs-selector-class">.PublishStateToROS</span>();<br>    ros::<span class="hljs-built_in">spinOnce</span>();<br>    rate_20hz<span class="hljs-selector-class">.sleep</span>();<br>&#125;<br>   <br></code></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="ros-Timer"><a href="#ros-Timer" class="headerlink" title="ros::Timer"></a>ros::Timer</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Timer <span class="hljs-title">createTimer</span><span class="hljs-params">(ros::Duration period, <span class="hljs-type">const</span> ros::TimerCallback &amp;callback,<span class="hljs-type">bool</span> oneshot = <span class="hljs-literal">false</span>,<span class="hljs-type">bool</span> autostart <span class="hljs-literal">true</span>)</span></span><br></code></pre></td></tr></table></figure>
-
+<h2 id="rostimer">ros::Timer</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">ros::Timer <span class="hljs-title">createTimer</span><span class="hljs-params">(ros::Duration period, <span class="hljs-type">const</span> ros::TimerCallback &amp;callback,<span class="hljs-type">bool</span> oneshot = <span class="hljs-literal">false</span>,<span class="hljs-type">bool</span> autostart <span class="hljs-literal">true</span>)</span></span><br></code></pre></td></tr></table></figure>
 <p>创建一个定时器对象</p>
 <p>其中，各参数的含义如下：</p>
 <ul>
 <li>ros::Duration period 定时器周期</li>
 <li>const ros::TimerCallback &amp;callback 回调函数</li>
-<li>bool oneshot &#x3D; false 是否只执行一次</li>
+<li>bool oneshot = false 是否只执行一次</li>
 <li>bool autostart true 是否自动启动</li>
 </ul>
 <p>常常与ros::Spin()函数一起使用</p>
 <p>使用案例</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">ros::Timer timer = nh.<span class="hljs-built_in">createTimer</span>(ros::<span class="hljs-built_in">Duration</span>(<span class="hljs-number">1</span>),cb);<br>ros::<span class="hljs-built_in">spin</span>();<br></code></pre></td></tr></table></figure>
-
 <p>和创建订阅对象是类似的</p>
-<p>当bool autostart &#x3D; false时，如果想要开启定时器，那么可以用以下语句：</p>
+<p>当bool autostart =
+false时，如果想要开启定时器，那么可以用以下语句：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">timer.<span class="hljs-built_in">start</span>();<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="ros-Shutdown"><a href="#ros-Shutdown" class="headerlink" title="ros::Shutdown()"></a>ros::Shutdown()</h2><p>可以关闭主节点，配合<code>while(ros::OK());</code>使用</p>
+<h2 id="rosshutdown">ros::Shutdown()</h2>
+<p>可以关闭主节点，配合<code>while(ros::OK());</code>使用</p>
 
                 
               </div>
